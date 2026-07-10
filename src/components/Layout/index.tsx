@@ -137,7 +137,13 @@ export const Layout = () => {
                 Useful Links
               </Title>
               <Stack gap="xs">
-                <Text size="sm" c="dimmed">
+                <Text
+                  component={Link}
+                  to="/about"
+                  size="sm"
+                  c="dimmed"
+                  style={{ textDecoration: 'none' }}
+                >
                   About Us
                 </Text>
                 <Text size="sm" c="dimmed">
@@ -149,7 +155,13 @@ export const Layout = () => {
                 <Text size="sm" c="dimmed">
                   Help
                 </Text>
-                <Text size="sm" c="dimmed">
+                <Text
+                  component={Link}
+                  to="/contact"
+                  size="sm"
+                  c="dimmed"
+                  style={{ textDecoration: 'none' }}
+                >
                   Contact Us
                 </Text>
               </Stack>
@@ -160,19 +172,49 @@ export const Layout = () => {
                 Vehicles
               </Title>
               <Stack gap="xs">
-                <Text size="sm" c="dimmed">
+                <Text
+                  component={Link}
+                  to="/catalog"
+                  size="sm"
+                  c="dimmed"
+                  style={{ textDecoration: 'none' }}
+                >
                   Coupe
                 </Text>
-                <Text size="sm" c="dimmed">
+                <Text
+                  component={Link}
+                  to="/catalog"
+                  size="sm"
+                  c="dimmed"
+                  style={{ textDecoration: 'none' }}
+                >
                   Sedan
                 </Text>
-                <Text size="sm" c="dimmed">
+                <Text
+                  component={Link}
+                  to="/catalog"
+                  size="sm"
+                  c="dimmed"
+                  style={{ textDecoration: 'none' }}
+                >
                   SUV
                 </Text>
-                <Text size="sm" c="dimmed">
+                <Text
+                  component={Link}
+                  to="/catalog"
+                  size="sm"
+                  c="dimmed"
+                  style={{ textDecoration: 'none' }}
+                >
                   Minivan
                 </Text>
-                <Text size="sm" c="dimmed">
+                <Text
+                  component={Link}
+                  to="/catalog"
+                  size="sm"
+                  c="dimmed"
+                  style={{ textDecoration: 'none' }}
+                >
                   Pickup
                 </Text>
               </Stack>
