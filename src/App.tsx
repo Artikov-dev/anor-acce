@@ -5,7 +5,7 @@ import { router } from '@/routes/router'
 
 export const App = () => {
   return (
-    <MantineProvider defaultColorScheme="dark">
+    <MantineProvider defaultColorScheme="light">
       <RouterProvider router={router} />
     </MantineProvider>
   )
