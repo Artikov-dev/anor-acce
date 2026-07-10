@@ -46,7 +46,7 @@ export const Catalog = () => {
   return (
     <Box pb={80}>
       <Container size="xl" py={60}>
-        <Title order={1} size={40} fw={900} ta="center" mb={40}>
+        <Title order={1} size={40} fw={900} ta="center" mb={40} c="black">
           Select a vehicle group
         </Title>
 
