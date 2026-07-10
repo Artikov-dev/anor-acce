@@ -5,6 +5,8 @@ import { Catalog } from '@/pages/Catalog'
 import { Product } from '@/pages/Product'
 import { Cart } from '@/pages/Cart'
 import { Login } from '@/pages/Login'
+import { About } from '@/pages/About'
+import { Contact } from '@/pages/Contact'
 
 export const router = createBrowserRouter([
   {
@@ -31,6 +33,14 @@ export const router = createBrowserRouter([
       {
         path: 'login',
         element: <Login />,
+      },
+      {
+        path: 'about',
+        element: <About />,
+      },
+      {
+        path: 'contact',
+        element: <Contact />,
       },
       {
         path: '*',
