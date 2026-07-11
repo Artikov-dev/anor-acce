@@ -27,7 +27,6 @@ export const About = () => {
   return (
     <Box pb={80}>
       <Container size="xl" py={40}>
-        {/* Header */}
         <Stack align="center" mb={60}>
           <Title order={1} size={48} fw={900}>
             About Us
@@ -40,7 +39,6 @@ export const About = () => {
           </Text>
         </Stack>
 
-        {/* Intro Grid */}
         <Grid gap={60} mb={80} align="center">
           <Grid.Col span={{ base: 12, md: 5 }}>
             <Title order={2} size={40} fw={900} lh={1.1}>
@@ -89,7 +87,6 @@ export const About = () => {
           </Grid.Col>
         </Grid>
 
-        {/* Video Placeholder */}
         <Box
           bg="#f1f3f5"
           mb={80}
@@ -111,7 +108,6 @@ export const About = () => {
           </ThemeIcon>
         </Box>
 
-        {/* Stats */}
         <SimpleGrid cols={{ base: 1, sm: 3 }} mb={100} ta="center">
           <Box>
             <Title size={64} c={redBg} fw={900}>
@@ -139,7 +135,6 @@ export const About = () => {
           </Box>
         </SimpleGrid>
 
-        {/* Memories Section */}
         <Grid gap={60} mb={100} align="center">
           <Grid.Col span={{ base: 12, md: 6 }}>
             <Title order={2} size={36} fw={900} lh={1.1} mb="md">
@@ -180,7 +175,6 @@ export const About = () => {
           </Grid.Col>
         </Grid>
 
-        {/* App Download Banner */}
         <Box
           bg={redBg}
           p={60}
@@ -247,7 +241,6 @@ export const About = () => {
           </Grid>
         </Box>
 
-        {/* Reviews Section */}
         <Title ta="center" order={2} size={36} mb={40}>
           Reviews from our customers
         </Title>
@@ -323,7 +316,6 @@ export const About = () => {
           ))}
         </SimpleGrid>
 
-        {/* FAQ Section */}
         <Stack align="center" mb={40}>
           <Title order={2} size={36}>
             Top Car Rental Questions

@@ -28,7 +28,6 @@ export const Product = () => {
   const { id } = useParams()
   const navigate = useNavigate()
 
-  // Find vehicle or fallback to first
   const vehicle = VEHICLES.find((v) => v.id === id) || VEHICLES[0]
 
   const redBg = '#990033'
@@ -37,7 +36,6 @@ export const Product = () => {
     <Box pb={80}>
       <Container size="xl" py={40}>
         <Grid gap={60}>
-          {/* Left Column - Images */}
           <Grid.Col span={{ base: 12, md: 6 }}>
             <Box mb="md">
               <Title order={1} size={48} fw={900}>
@@ -89,7 +87,6 @@ export const Product = () => {
             </SimpleGrid>
           </Grid.Col>
 
-          {/* Right Column - Details */}
           <Grid.Col span={{ base: 12, md: 6 }} pt={{ base: 20, md: 100 }}>
             <Title order={3} mb="xl">
               Technical Specification
@@ -188,7 +185,6 @@ export const Product = () => {
           </Grid.Col>
         </Grid>
 
-        {/* Other cars section */}
         <Box mt={80}>
           <Group justify="space-between" align="flex-end" mb={40}>
             <Title order={2} size={36}>

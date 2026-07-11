@@ -29,7 +29,6 @@ export const Contact = () => {
   return (
     <Box pb={80}>
       <Container size="xl" py={40}>
-        {/* Header */}
         <Stack align="center" mb={60}>
           <Title order={1} size={48} fw={900}>
             Contact Us
@@ -42,7 +41,6 @@ export const Contact = () => {
           </Text>
         </Stack>
 
-        {/* Booking & Hero Section */}
         <Grid gap={40} mb={100}>
           <Grid.Col span={{ base: 12, md: 4 }}>
             <Card p={40} radius="xl" bg={redBg} style={{ height: '100%' }}>
@@ -127,7 +125,6 @@ export const Contact = () => {
           </Grid.Col>
         </Grid>
 
-        {/* Contact Info Row */}
         <SimpleGrid cols={{ base: 1, sm: 2, lg: 4 }} spacing="xl" mb={100}>
           <Group wrap="nowrap">
             <ThemeIcon size={48} radius="xl" bg={orangeBtn}>
@@ -175,7 +172,6 @@ export const Contact = () => {
           </Group>
         </SimpleGrid>
 
-        {/* Blog Section */}
         <Title ta="center" order={2} size={36} mb={60}>
           Latest blog posts & news
         </Title>
@@ -206,7 +202,6 @@ export const Contact = () => {
           ))}
         </SimpleGrid>
 
-        {/* Brands bar */}
         <Box
           py={40}
           px={{ base: 20, md: 60 }}

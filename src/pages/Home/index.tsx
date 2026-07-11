@@ -32,7 +32,6 @@ const orangeBtn = '#F59E0B'
 export const Home = () => {
   return (
     <Box pb={80}>
-      {/* Hero Section */}
       <Container size="xl">
         <Box
           bg={redBg}
@@ -101,7 +100,6 @@ export const Home = () => {
         </Box>
       </Container>
 
-      {/* Features Section */}
       <Container size="xl" py={80}>
         <SimpleGrid cols={{ base: 1, md: 3 }} spacing={50}>
           <Stack align="center" ta="center">
@@ -136,11 +134,9 @@ export const Home = () => {
         </SimpleGrid>
       </Container>
 
-      {/* Steps Section */}
       <Container size="xl" py={60}>
         <Grid gap={60} align="center">
           <Grid.Col span={{ base: 12, md: 5 }}>
-            {/* Placeholder Image */}
             <Box
               w="100%"
               style={{ aspectRatio: '1', borderRadius: 20, overflow: 'hidden' }}
@@ -186,7 +182,6 @@ export const Home = () => {
         </Grid>
       </Container>
 
-      {/* Choose Car Section */}
       <Container size="xl" py={60}>
         <Group justify="space-between" align="flex-end" mb={40}>
           <Title order={2} style={{ maxWidth: 300 }} lh={1.2}>
@@ -269,7 +264,6 @@ export const Home = () => {
         </SimpleGrid>
       </Container>
 
-      {/* Facts in Numbers */}
       <Box bg={redBg} py={60} style={{ borderRadius: 20 }} my={40}>
         <Container size="xl">
           <Stack align="center" mb={40}>
@@ -316,7 +310,6 @@ export const Home = () => {
         </Container>
       </Box>
 
-      {/* Download App Section */}
       <Container size="xl" py={80}>
         <Grid align="center" gap={60}>
           <Grid.Col span={{ base: 12, md: 6 }}>
@@ -366,7 +359,6 @@ export const Home = () => {
             </Group>
           </Grid.Col>
           <Grid.Col span={{ base: 12, md: 6 }}>
-            {/* Phone Mockup Placeholder */}
             <Group
               justify="center"
               style={{ position: 'relative', height: 400 }}
@@ -402,7 +394,6 @@ export const Home = () => {
         </Grid>
       </Container>
 
-      {/* CTA Section */}
       <Box bg={redBg} py={60} style={{ borderRadius: 20 }} mt={40}>
         <Container size="xl">
           <Grid align="center">

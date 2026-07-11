@@ -152,7 +152,6 @@ export const Catalog = () => {
           ))}
         </SimpleGrid>
 
-        {/* Brands bar */}
         <Box
           mt={80}
           py={40}
