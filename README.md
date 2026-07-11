@@ -1,73 +1,44 @@
-# React + TypeScript + Vite
+# Anor Accelerator
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Bu loyiha avtomobillarni ijaraga berish (Car Rental) xizmatiga mo'ljallangan platforma bo'lib, zamonaviy web texnologiyalar asosida qurilgan.
 
-Currently, two official plugins are available:
+## Ishlatilgan Texnologiyalar (Stack)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Ushbu loyihada quyidagi texnologiyalar va kutubxonalar ishlatilgan:
 
-## React Compiler
+### Asosiy Texnologiyalar
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **[React 19](https://react.dev/)**: Foydalanuvchi interfeysini (UI) qurish uchun asosiy kutubxona.
+- **[TypeScript](https://www.typescriptlang.org/)**: JavaScript'ga statik tiplar qo'shuvchi dasturlash tili.
+- **[Vite 8](https://vitejs.dev/)**: Tezkor frontend build-tool (Loyihani tezroq ishga tushirish va yig'ish uchun).
+- **[React Router 7](https://reactrouter.com/)**: Sahifalar orasida o'tish (routing) uchun.
 
-## Expanding the ESLint configuration
+### UI / Komponentlar va Dizayn
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **[Mantine UI (v9)](https://mantine.dev/)**: Tayyor, responsiv va chiroyli React komponentlar to'plami. Loyihada shuningdek `@mantine/hooks`, `@mantine/form`, `@mantine/notifications`, `@mantine/modals`, `@mantine/dates` kengaytmalari ishlatilgan.
+- **[Tabler Icons React](https://tabler-icons.io/)**: Loyihaga mos va zamonaviy ikonka to'plami.
+- **[Remix Icon React](https://remixicon.com/)**: Qoshimcha ikonka to'plami.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Holat (State) va Ma'lumotlarni Boshqarish
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- **[TanStack React Query](https://tanstack.com/query/latest)**: API bilan ishlash, server state'ni boshqarish va caching uchun.
+- **[DayJS](https://day.js.org/)**: Sana va vaqtlarni qulay formatlash va boshqarish uchun engil kutubxona.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### Kod Sifati va Tooling
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- **ESLint & Prettier**: Kod standartini saqlash, xatoliklarni erta aniqlash va formatlash.
+- **Husky & Lint-Staged**: Git commit qilishdan oldin kodni avtomatik tekshirish va formatlash uchun pre-commit hooklar.
+- **PostCSS**: CSS bilan ishlash, Mantine o'zgaruvchilarini to'g'ri integratsiya qilish uchun.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Qanday ishga tushiriladi?
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+1. Loyihani yuklab oling yoki clone qiling.
+2. Kerakli paketlarni o'rnating:
+   ```bash
+   npm install
+   ```
+3. Loyihani dev rejimida ishga tushiring:
+   ```bash
+   npm run dev
+   ```
+   Loyiha standart bo'yicha \`http://localhost:5173\` manzilida ochiladi.
