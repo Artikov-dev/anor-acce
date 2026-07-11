@@ -26,10 +26,13 @@ import {
   IconBrandGooglePlay,
   IconChevronDown,
 } from '@tabler/icons-react'
+import { useNavigate } from 'react-router'
 const redBg = '#990033'
 const orangeBtn = '#F59E0B'
 
 export const Home = () => {
+  const navigate = useNavigate()
+
   return (
     <Box pb={80}>
       <Container size="xl">
@@ -256,7 +259,12 @@ export const Home = () => {
                 </Group>
               </Group>
 
-              <Button fullWidth bg={redBg} radius="md">
+              <Button
+                fullWidth
+                bg={redBg}
+                radius="md"
+                onClick={() => navigate(`/product/${idx + 1}`)}
+              >
                 View Details
               </Button>
             </Card>
