@@ -15,7 +15,6 @@ export interface IProduct {
   images: string[]
 }
 
-/** Общие параметры любого списочного запроса */
 export interface ICommonParams {
   page?: string
   size?: string
@@ -24,6 +23,4 @@ export interface ICommonParams {
 
 export type TProductParams = ICommonParams & {
   categoryId?: string
-  price_min?: string
-  price_max?: string
 }

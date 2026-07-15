@@ -1,5 +1,5 @@
-import type { ICategory, IProduct, TProductParams } from '../types/product.ts'
-import { $api } from './api.ts'
+import type { ICategory, IProduct, TProductParams } from '../types/product'
+import { $api } from './api'
 
 const baseURL = '/products'
 
