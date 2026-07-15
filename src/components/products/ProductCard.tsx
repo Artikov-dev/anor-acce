@@ -1,17 +1,8 @@
 import { Badge, Card, Group, Image, Text } from '@mantine/core'
-import { Link } from 'react-router'
-import type { IProduct } from '../../types/product.ts'
+import type { IProduct } from '../../types/product'
 
 export const ProductCard = ({ product }: { product: IProduct }) => (
-  <Card
-    component={Link}
-    to={`/product/${product.id}`}
-    shadow="sm"
-    padding="lg"
-    radius="md"
-    withBorder
-    style={{ textDecoration: 'none' }}
-  >
+  <Card shadow="sm" padding="lg" radius="md" withBorder>
     <Card.Section>
       <Image
         src={product.images?.[0]}

@@ -1,6 +1,6 @@
-import { useQuery } from '@tanstack/react-query'
-import { categoriesApi, productsApi } from '../api/products.ts'
-import type { TProductParams } from '../types/product.ts'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { productsApi, categoriesApi } from '../api/products'
+import type { TProductParams, IProduct } from '../types/product'
 
 export const PRODUCTS_KEY = 'products-key'
 export const CATEGORIES_KEY = 'categories-key'
@@ -35,3 +35,14 @@ export const useCategories = () =>
     queryFn: () => categoriesApi.get().then((resp) => resp.data),
     staleTime: Infinity,
   })
+
+export const useCreateProduct = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (data: Partial<IProduct>) => productsApi.create(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [PRODUCTS_KEY] })
+    },
+  })
+}
