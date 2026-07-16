@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import {
   Alert,
   Box,
@@ -9,9 +10,13 @@ import {
   Text,
   Title,
   Container,
+  Button,
+  Modal,
+  Group,
 } from '@mantine/core'
 import { ProductCard } from '../components/products/ProductCard'
 import { ProductFilter } from '../components/products/ProductFilter'
+import { CreateProduct } from '../components/products/CreateProduct'
 import { useProducts } from '../hooks/useProducts'
 import { useSearchRequestParams } from '../hooks/useSearchRequestParams'
 import type { TProductParams } from '../types/product'
@@ -19,6 +24,8 @@ import type { TProductParams } from '../types/product'
 const PAGE_SIZE = 6
 
 export function ProductsPage() {
+  const [opened, setOpened] = useState(false)
+
   const { getDefaultSearchParams, setSearchParams } =
     useSearchRequestParams<TProductParams>({
       defaultParams: { page: '1', size: String(PAGE_SIZE) },
@@ -33,10 +40,21 @@ export function ProductsPage() {
 
   return (
     <Container size="xl" py="xl">
+      <Modal
+        opened={opened}
+        onClose={() => setOpened(false)}
+        title="Yangi mahsulot"
+      >
+        <CreateProduct onSuccessCallback={() => setOpened(false)} />
+      </Modal>
+
       <Stack gap={40} align="stretch">
-        <Title order={2} ta="center">
-          Каталог
-        </Title>
+        <Group justify="space-between">
+          <Title order={2}>Каталог</Title>
+          <Button onClick={() => setOpened(true)} color="orange">
+            + Mahsulot qo'shish
+          </Button>
+        </Group>
 
         <ProductFilter />
 
