@@ -86,10 +86,26 @@ export const ProductCard = ({ product }: { product: IProduct }) => {
         <Card.Section pos="relative">
           <Image
             src={product.images?.[0]}
-            h={220}
+            h={240}
             alt={product.title}
             fallbackSrc="https://placehold.co/600x400?text=No+image"
           />
+          <Badge
+            color="anor"
+            variant="filled"
+            size="xl"
+            radius="md"
+            pos="absolute"
+            bottom={16}
+            left={16}
+            style={{
+              fontWeight: 800,
+              boxShadow: '0 4px 12px rgba(217,0,8,0.4)',
+              letterSpacing: '0.5px',
+            }}
+          >
+            ${product.price}
+          </Badge>
           <Group gap="xs" pos="absolute" top={12} right={12}>
             <ActionIcon
               color="anor"
@@ -115,24 +131,15 @@ export const ProductCard = ({ product }: { product: IProduct }) => {
           </Group>
         </Card.Section>
 
-        <Group justify="space-between" mt="md" align="flex-start">
+        <Group justify="space-between" mt="xl" align="flex-start">
           <Text
-            fw={700}
-            size="lg"
+            fw={800}
+            size="xl"
             lineClamp={2}
-            style={{ flex: 1, color: 'var(--text-h)' }}
+            style={{ flex: 1, lineHeight: 1.3 }}
           >
             {product.title}
           </Text>
-          <Badge
-            color="anor"
-            variant="filled"
-            size="lg"
-            radius="sm"
-            style={{ fontWeight: 800 }}
-          >
-            ${product.price}
-          </Badge>
         </Group>
 
         <Text size="sm" c="dimmed" lineClamp={3} mt="sm">
