@@ -88,6 +88,7 @@ export const ProductCard = ({ product }: { product: IProduct }) => {
               variant="filled"
               radius="md"
               onClick={openDeleteModal}
+              loading={deleteMutation.isPending}
             >
               <IconTrash size={18} />
             </ActionIcon>
