@@ -10,24 +10,34 @@ import {
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { notifications } from '@mantine/notifications'
-import { useCreateProduct, useCategories } from '../../hooks/useProducts'
-import type { ICategory } from '../../types/product'
+import {
+  useCreateProduct,
+  useUpdateProduct,
+  useCategories,
+} from '../../hooks/useProducts'
+import type { ICategory, IProduct } from '../../types/product'
+
 export const CreateProduct = ({
   onSuccessCallback,
+  product,
 }: {
   onSuccessCallback?: () => void
+  product?: IProduct
 }) => {
   const [loading, setLoading] = useState(false)
   const createMutation = useCreateProduct()
+  const updateMutation = useUpdateProduct()
   const { data: categories = [] } = useCategories()
+
+  const isEdit = !!product
 
   const form = useForm({
     initialValues: {
-      title: '',
-      price: 0,
-      description: '',
-      categoryId: '',
-      images: 'https://i.imgur.com/QkIa5tT.jpeg',
+      title: product?.title || '',
+      price: product?.price || 0,
+      description: product?.description || '',
+      categoryId: product?.category?.id ? String(product.category.id) : '',
+      images: product?.images?.[0] || 'https://i.imgur.com/QkIa5tT.jpeg',
     },
     validate: {
       title: (value) =>
@@ -49,27 +59,44 @@ export const CreateProduct = ({
       images: [values.images],
     }
 
-    createMutation.mutate(payload, {
-      onSuccess: () => {
-        notifications.show({
-          title: 'Muvaffaqiyatli!',
-          message: 'Mahsulot muvaffaqiyatli saqlandi',
-          color: 'green',
-        })
-        form.reset()
-        if (onSuccessCallback) onSuccessCallback()
-      },
-      onError: () => {
-        notifications.show({
-          title: 'Xatolik!',
-          message: 'Mahsulotni saqlashda xatolik yuz berdi',
-          color: 'red',
-        })
-      },
-      onSettled: () => {
-        setLoading(false)
-      },
-    })
+    const handleSuccess = () => {
+      notifications.show({
+        title: 'Muvaffaqiyatli!',
+        message: isEdit
+          ? 'Mahsulot muvaffaqiyatli yangilandi'
+          : 'Mahsulot muvaffaqiyatli saqlandi',
+        color: 'green',
+      })
+      form.reset()
+      if (onSuccessCallback) onSuccessCallback()
+    }
+
+    const handleError = () => {
+      notifications.show({
+        title: 'Xatolik!',
+        message: isEdit
+          ? 'Mahsulotni yangilashda xatolik yuz berdi'
+          : 'Mahsulotni saqlashda xatolik yuz berdi',
+        color: 'red',
+      })
+    }
+
+    if (isEdit) {
+      updateMutation.mutate(
+        { id: Number(product.id), data: payload },
+        {
+          onSuccess: handleSuccess,
+          onError: handleError,
+          onSettled: () => setLoading(false),
+        }
+      )
+    } else {
+      createMutation.mutate(payload, {
+        onSuccess: handleSuccess,
+        onError: handleError,
+        onSettled: () => setLoading(false),
+      })
+    }
   }
 
   return (
@@ -126,7 +153,7 @@ export const CreateProduct = ({
             Tozalash
           </Button>
           <Button type="submit" loading={loading} color="blue">
-            Saqlash
+            {isEdit ? 'Yangilash' : 'Saqlash'}
           </Button>
         </Group>
       </Stack>

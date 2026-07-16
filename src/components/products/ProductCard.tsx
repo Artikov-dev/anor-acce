@@ -6,16 +6,17 @@ import {
   Text,
   ActionIcon,
   Modal,
-  Button,
 } from '@mantine/core'
-import { IconTrash } from '@tabler/icons-react'
+import { IconTrash, IconEdit } from '@tabler/icons-react'
+import { modals } from '@mantine/modals'
+import { notifications } from '@mantine/notifications'
 import { useState } from 'react'
 import type { IProduct } from '../../types/product'
 import { useDeleteProduct } from '../../hooks/useProducts'
-import { notifications } from '@mantine/notifications'
+import { CreateProduct } from './CreateProduct'
 
 export const ProductCard = ({ product }: { product: IProduct }) => {
-  const [opened, setOpened] = useState(false)
+  const [editOpened, setEditOpened] = useState(false)
   const deleteMutation = useDeleteProduct()
 
   const handleDelete = () => {
@@ -26,7 +27,6 @@ export const ProductCard = ({ product }: { product: IProduct }) => {
           message: 'Mahsulot ochirildi',
           color: 'green',
         })
-        setOpened(false)
       },
       onError: () => {
         notifications.show({
@@ -38,30 +38,32 @@ export const ProductCard = ({ product }: { product: IProduct }) => {
     })
   }
 
-  return (
-    <>
-      <Modal
-        opened={opened}
-        onClose={() => setOpened(false)}
-        title="O'chirishni tasdiqlang"
-        centered
-      >
-        <Text size="sm" mb="lg">
+  const openDeleteModal = () =>
+    modals.openConfirmModal({
+      title: "O'chirishni tasdiqlang",
+      centered: true,
+      children: (
+        <Text size="sm">
           Siz rostdan ham <b>{product.title}</b> mahsulotini ochirmoqchimisiz?
           Bu amalni ortga qaytarib bolmaydi.
         </Text>
-        <Group justify="flex-end">
-          <Button variant="light" color="gray" onClick={() => setOpened(false)}>
-            Bekor qilish
-          </Button>
-          <Button
-            color="red"
-            loading={deleteMutation.isPending}
-            onClick={handleDelete}
-          >
-            Ochirish
-          </Button>
-        </Group>
+      ),
+      labels: { confirm: 'Ochirish', cancel: 'Bekor qilish' },
+      confirmProps: { color: 'red' },
+      onConfirm: handleDelete,
+    })
+
+  return (
+    <>
+      <Modal
+        opened={editOpened}
+        onClose={() => setEditOpened(false)}
+        title="Mahsulotni tahrirlash"
+      >
+        <CreateProduct
+          product={product}
+          onSuccessCallback={() => setEditOpened(false)}
+        />
       </Modal>
 
       <Card shadow="sm" padding="lg" radius="md" withBorder>
@@ -72,17 +74,24 @@ export const ProductCard = ({ product }: { product: IProduct }) => {
             alt={product.title}
             fallbackSrc="https://placehold.co/600x400?text=No+image"
           />
-          <ActionIcon
-            color="red"
-            variant="filled"
-            radius="md"
-            pos="absolute"
-            top={10}
-            right={10}
-            onClick={() => setOpened(true)}
-          >
-            <IconTrash size={18} />
-          </ActionIcon>
+          <Group gap="xs" pos="absolute" top={10} right={10}>
+            <ActionIcon
+              color="blue"
+              variant="filled"
+              radius="md"
+              onClick={() => setEditOpened(true)}
+            >
+              <IconEdit size={18} />
+            </ActionIcon>
+            <ActionIcon
+              color="red"
+              variant="filled"
+              radius="md"
+              onClick={openDeleteModal}
+            >
+              <IconTrash size={18} />
+            </ActionIcon>
+          </Group>
         </Card.Section>
 
         <Group justify="space-between" mt="md">

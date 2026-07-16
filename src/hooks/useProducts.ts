@@ -47,6 +47,18 @@ export const useCreateProduct = () => {
   })
 }
 
+export const useUpdateProduct = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: ({ id, data }: { id: number; data: Partial<IProduct> }) =>
+      productsApi.update(id, data).then((res) => res.data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [PRODUCTS_KEY] })
+    },
+  })
+}
+
 export const useDeleteProduct = () => {
   const queryClient = useQueryClient()
 

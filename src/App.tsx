@@ -1,6 +1,7 @@
 import { RouterProvider } from 'react-router'
 import { MantineProvider } from '@mantine/core'
 import { Notifications } from '@mantine/notifications'
+import { ModalsProvider } from '@mantine/modals'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import '@mantine/core/styles.css'
@@ -13,8 +14,10 @@ export const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <MantineProvider defaultColorScheme="light">
-        <Notifications />
-        <RouterProvider router={router} />
+        <ModalsProvider>
+          <Notifications />
+          <RouterProvider router={router} />
+        </ModalsProvider>
       </MantineProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
