@@ -51,7 +51,7 @@ export function ProductsPage() {
       <Stack gap={40} align="stretch">
         <Group justify="space-between">
           <Title order={2}>Каталог</Title>
-          <Button onClick={() => setOpened(true)} color="orange">
+          <Button onClick={() => setOpened(true)} color="red">
             + Mahsulot qo'shish
           </Button>
         </Group>

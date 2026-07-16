@@ -85,7 +85,7 @@ export const Layout = () => {
 
             {}
             <Group gap="sm">
-              <ThemeIcon radius="xl" size="xl" color="#5a3dff">
+              <ThemeIcon radius="xl" size="xl" color="#ff0000ff">
                 <IconPhoneFilled size={20} />
               </ThemeIcon>
               <Stack gap={0}>
@@ -249,7 +249,7 @@ export const Layout = () => {
                   </Box>
                 </Group>
                 <Group wrap="nowrap">
-                  <ThemeIcon radius="xl" color="orange" variant="light">
+                  <ThemeIcon radius="xl" color="red" variant="light">
                     <IconPhoneFilled size={16} />
                   </ThemeIcon>
                   <Box>

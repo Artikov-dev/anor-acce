@@ -40,9 +40,19 @@ export const useCreateProduct = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: (data: Partial<IProduct>) => productsApi.create(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [PRODUCTS_KEY] })
+    mutationFn: (data: Partial<IProduct>) =>
+      productsApi.create(data).then((res) => res.data),
+    onSuccess: (newProduct) => {
+      queryClient.setQueriesData(
+        { queryKey: [PRODUCTS_KEY] },
+        (oldData: IProduct[] | undefined) => {
+          if (!oldData) return oldData
+          if (Array.isArray(oldData)) {
+            return [newProduct, ...oldData]
+          }
+          return oldData
+        }
+      )
     },
   })
 }

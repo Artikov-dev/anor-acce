@@ -101,11 +101,13 @@ export const CreateProduct = ({
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
-      <Stack>
+      <Stack gap="md">
         <TextInput
           label="Mahsulot nomi"
           placeholder="Masalan: iPhone 15 Pro"
           withAsterisk
+          radius="md"
+          size="md"
           {...form.getInputProps('title')}
         />
 
@@ -114,6 +116,8 @@ export const CreateProduct = ({
           placeholder="0"
           withAsterisk
           min={0}
+          radius="md"
+          size="md"
           {...form.getInputProps('price')}
         />
 
@@ -121,6 +125,8 @@ export const CreateProduct = ({
           label="Kategoriya"
           placeholder="Kategoriyani tanlang"
           withAsterisk
+          radius="md"
+          size="md"
           data={categories.map((c: ICategory) => ({
             value: String(c.id),
             label: c.name,
@@ -132,6 +138,8 @@ export const CreateProduct = ({
           label="Rasm havolasi (URL)"
           placeholder="https://..."
           withAsterisk
+          radius="md"
+          size="md"
           {...form.getInputProps('images')}
         />
 
@@ -140,19 +148,30 @@ export const CreateProduct = ({
           placeholder="Mahsulot haqida ma'lumot..."
           withAsterisk
           minRows={4}
+          radius="md"
+          size="md"
           {...form.getInputProps('description')}
         />
 
-        <Group justify="flex-end" mt="md">
+        <Group justify="flex-end" mt="xl">
           <Button
             type="button"
-            variant="light"
+            variant="subtle"
             color="gray"
+            radius="xl"
+            size="md"
             onClick={() => form.reset()}
           >
             Tozalash
           </Button>
-          <Button type="submit" loading={loading} color="blue">
+          <Button
+            type="submit"
+            loading={loading}
+            color="anor"
+            radius="xl"
+            size="md"
+            px={32}
+          >
             {isEdit ? 'Yangilash' : 'Saqlash'}
           </Button>
         </Group>
