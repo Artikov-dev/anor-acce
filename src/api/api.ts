@@ -10,8 +10,6 @@ $api.interceptors.request.use((config) => {
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
   }
-
-  // Adapter: dastur search deb yuboradi, API esa title kutadi
   const params = { ...config.params }
 
   if (params.search) {

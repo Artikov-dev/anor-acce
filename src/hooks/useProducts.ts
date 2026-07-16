@@ -46,3 +46,14 @@ export const useCreateProduct = () => {
     },
   })
 }
+
+export const useDeleteProduct = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (id: number) => productsApi.delete(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [PRODUCTS_KEY] })
+    },
+  })
+}
