@@ -49,3 +49,15 @@ Ushbu loyihada quyidagi texnologiyalar va kutubxonalar ishlatilgan:
    ```bash
    npm run build
    ```
+
+## Loyiha Tuzilmasi (Folder Structure)
+
+Asosiy kodlar `src/` papkasida joylashgan:
+
+- `api/` - Backend API bilan ishlash uchun so'rovlar
+- `assets/` - Rasmlar va statik fayllar
+- `components/` - Qayta ishlatiluvchi UI komponentlar
+- `hooks/` - Maxsus React hooklari (Custom Hooks)
+- `pages/` - Asosiy sahifalar (Pages)
+- `routes/` - Router sozlamalari
+- `types/` - TypeScript interfeys va tiplari
