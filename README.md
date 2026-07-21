@@ -38,7 +38,14 @@ Ushbu loyihada quyidagi texnologiyalar va kutubxonalar ishlatilgan:
    npm install
    ```
 3. Loyihani dev rejimida ishga tushiring:
+
    ```bash
    npm run dev
    ```
-   Loyiha standart bo'yicha \`http://localhost:5173\` manzilida ochiladi.
+
+   Loyiha standart bo'yicha `http://localhost:5173` manzilida ochiladi.
+
+4. Loyihani ishlab chiqarish (production) uchun yig'ish:
+   ```bash
+   npm run build
+   ```
