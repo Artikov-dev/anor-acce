@@ -10,6 +10,7 @@ import {
   Box,
   Button,
   Divider,
+  Avatar,
 } from '@mantine/core'
 import { Outlet, Link, useLocation } from 'react-router'
 import {
@@ -19,17 +20,25 @@ import {
   IconMail,
   IconBrandApple,
   IconBrandGooglePlay,
+  IconLogout,
 } from '@tabler/icons-react'
+import { useAuthStore } from '@/store/useAuthStore'
+import { useProfileQuery, useLogout } from '@/hooks/useAuthQueries'
 
 export const Layout = () => {
   const location = useLocation()
+  useProfileQuery()
+
+  const user = useAuthStore((state) => state.user)
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated)
+  const logout = useLogout()
 
   return (
     <AppShell header={{ height: 80 }} padding="md">
       <AppShell.Header>
         <Container size="xl" h="100%">
           <Group h="100%" px="md" justify="space-between">
-            {}
+            {/* Logo */}
             <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
               <Group gap="xs">
                 <IconCar size={32} />
@@ -39,7 +48,7 @@ export const Layout = () => {
               </Group>
             </Link>
 
-            {}
+            {/* Navigation links */}
             <Group gap="xl">
               <Text
                 component={Link}
@@ -99,19 +108,55 @@ export const Layout = () => {
                 </Stack>
               </Group>
 
-              <Group gap="xs">
-                <Button
-                  component={Link}
-                  to="/login"
-                  variant="default"
-                  radius="md"
-                >
-                  Kirish
-                </Button>
-                <Button component={Link} to="/register" color="red" radius="md">
-                  Ro'yxatdan o'tish
-                </Button>
-              </Group>
+              {isAuthenticated && user ? (
+                <Group gap="sm">
+                  <Avatar
+                    src={user.avatar}
+                    alt={user.name}
+                    radius="xl"
+                    color="red"
+                  >
+                    {user.name ? user.name[0].toUpperCase() : 'U'}
+                  </Avatar>
+                  <Stack gap={0}>
+                    <Text size="sm" fw={600} lh={1.2}>
+                      {user.name}
+                    </Text>
+                    <Text size="xs" c="dimmed" lh={1.2}>
+                      {user.email}
+                    </Text>
+                  </Stack>
+                  <Button
+                    variant="light"
+                    color="red"
+                    radius="md"
+                    size="xs"
+                    leftSection={<IconLogout size={16} />}
+                    onClick={logout}
+                  >
+                    Chiqish
+                  </Button>
+                </Group>
+              ) : (
+                <Group gap="xs">
+                  <Button
+                    component={Link}
+                    to="/login"
+                    variant="default"
+                    radius="md"
+                  >
+                    Kirish
+                  </Button>
+                  <Button
+                    component={Link}
+                    to="/register"
+                    color="red"
+                    radius="md"
+                  >
+                    Ro'yxatdan o'tish
+                  </Button>
+                </Group>
+              )}
             </Group>
           </Group>
         </Container>

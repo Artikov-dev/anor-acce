@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router'
+import { useNavigate, Link } from 'react-router'
 import {
   TextInput,
   PasswordInput,
@@ -10,14 +10,43 @@ import {
   Stack,
   Text,
   Anchor,
+  Alert,
 } from '@mantine/core'
+import { notifications } from '@mantine/notifications'
+import { IconAlertCircle } from '@tabler/icons-react'
+import { useLoginMutation } from '@/hooks/useAuthQueries'
+import { useAuthStore } from '@/store/useAuthStore'
 
 export const Login: React.FC = () => {
+  const navigate = useNavigate()
+  const loginMutation = useLoginMutation()
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated)
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
+  React.useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/')
+    }
+  }, [isAuthenticated, navigate])
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+
+    loginMutation.mutate(
+      { email, password },
+      {
+        onSuccess: () => {
+          notifications.show({
+            title: 'Muvaffaqiyatli!',
+            message: 'Tizimga muvaffaqiyatli kirdingiz',
+            color: 'green',
+          })
+          navigate('/')
+        },
+      }
+    )
   }
 
   return (
@@ -36,6 +65,17 @@ export const Login: React.FC = () => {
       <Paper withBorder shadow="md" p={30} mt={30} radius="md">
         <form onSubmit={handleSubmit}>
           <Stack>
+            {loginMutation.isError && (
+              <Alert
+                icon={<IconAlertCircle size={16} />}
+                title="Xatolik"
+                color="red"
+                variant="filled"
+              >
+                Email yoki parol noto'g'ri. Qaytadan urinib ko'ring.
+              </Alert>
+            )}
+
             <TextInput
               label="Email"
               placeholder="email@example.com"
@@ -52,7 +92,12 @@ export const Login: React.FC = () => {
               onChange={(e) => setPassword(e.currentTarget.value)}
             />
 
-            <Button type="submit" fullWidth mt="xl">
+            <Button
+              type="submit"
+              fullWidth
+              mt="xl"
+              loading={loginMutation.isPending}
+            >
               Kirish
             </Button>
           </Stack>

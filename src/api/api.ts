@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { useAuthStore } from '@/store/useAuthStore'
 
 export const $api = axios.create({
   baseURL: 'https://api.escuelajs.co/api/v1',
@@ -14,7 +15,6 @@ $api.interceptors.request.use((config) => {
 
   if (params.search) {
     params.title = params.search
-    delete params.search
   }
 
   config.params = params
@@ -26,8 +26,7 @@ $api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('access_token')
-      globalThis.location.href = '/'
+      useAuthStore.getState().logout()
     }
     return Promise.reject(error)
   }
