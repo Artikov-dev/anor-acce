@@ -4,7 +4,6 @@ import {
   Button,
   Table,
   Group,
-  ActionIcon,
   Image,
   Text,
   Paper,
@@ -13,13 +12,6 @@ import {
   Alert,
   Modal,
 } from '@mantine/core'
-import {
-  IconPlus,
-  IconEdit,
-  IconTrash,
-  IconAlertCircle,
-  IconCategory,
-} from '@tabler/icons-react'
 import {
   useCategoriesQuery,
   useDeleteCategoryMutation,
@@ -88,9 +80,7 @@ export const DashboardCategories: React.FC = () => {
             Управление категориями товаров
           </Text>
         </div>
-        <Button leftSection={<IconPlus size={16} />} onClick={handleOpenCreate}>
-          Добавить категорию
-        </Button>
+        <Button onClick={handleOpenCreate}>Добавить категорию</Button>
       </Group>
 
       {/* State 1: Loading */}
@@ -107,12 +97,7 @@ export const DashboardCategories: React.FC = () => {
 
       {/* State 2: Error */}
       {isError && (
-        <Alert
-          icon={<IconAlertCircle size={16} />}
-          title="Ошибка загрузки"
-          color="red"
-          variant="filled"
-        >
+        <Alert title="Ошибка загрузки" color="red" variant="filled">
           <Group justify="space-between" align="center">
             <Text size="sm">Не удалось загрузить список категорий.</Text>
             <Button
@@ -134,18 +119,13 @@ export const DashboardCategories: React.FC = () => {
         (categories.length === 0 ? (
           <Paper p="xl" withBorder style={{ textAlign: 'center' }}>
             <Stack align="center" gap="xs">
-              <IconCategory size={48} color="gray" />
               <Text fw={500} size="lg">
                 Категории не найдены
               </Text>
               <Text c="dimmed" size="sm">
                 Создайте первую категорию для каталога
               </Text>
-              <Button
-                leftSection={<IconPlus size={16} />}
-                onClick={handleOpenCreate}
-                mt="sm"
-              >
+              <Button onClick={handleOpenCreate} mt="sm">
                 Создать категорию
               </Button>
             </Stack>
@@ -157,7 +137,7 @@ export const DashboardCategories: React.FC = () => {
                 <Table.Tr>
                   <Table.Th style={{ width: 80 }}>Изображение</Table.Th>
                   <Table.Th>Название</Table.Th>
-                  <Table.Th style={{ width: 120, textAlign: 'right' }}>
+                  <Table.Th style={{ width: 180, textAlign: 'right' }}>
                     Действия
                   </Table.Th>
                 </Table.Tr>
@@ -178,26 +158,26 @@ export const DashboardCategories: React.FC = () => {
                     <Table.Td fw={500}>{cat.name}</Table.Td>
                     <Table.Td>
                       <Group gap="xs" justify="flex-end">
-                        <ActionIcon
-                          variant="subtle"
+                        <Button
+                          size="xs"
+                          variant="light"
                           color="blue"
                           onClick={() => handleOpenEdit(cat)}
-                          title="Редактировать"
                         >
-                          <IconEdit size={18} />
-                        </ActionIcon>
-                        <ActionIcon
-                          variant="subtle"
+                          Изменить
+                        </Button>
+                        <Button
+                          size="xs"
+                          variant="light"
                           color="red"
                           onClick={() => handleOpenDelete(cat)}
-                          title="Удалить"
                           loading={
                             deleteMutation.isPending &&
                             deletingCategory?.id === cat.id
                           }
                         >
-                          <IconTrash size={18} />
-                        </ActionIcon>
+                          Удалить
+                        </Button>
                       </Group>
                     </Table.Td>
                   </Table.Tr>

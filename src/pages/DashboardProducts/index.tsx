@@ -5,7 +5,6 @@ import {
   Button,
   Table,
   Group,
-  ActionIcon,
   Image,
   Text,
   Paper,
@@ -18,15 +17,6 @@ import {
   Modal,
   Badge,
 } from '@mantine/core'
-import {
-  IconPlus,
-  IconEdit,
-  IconTrash,
-  IconSearch,
-  IconAlertCircle,
-  IconShoppingBag,
-  IconFilterOff,
-} from '@tabler/icons-react'
 import {
   useProductsQuery,
   useDeleteProductMutation,
@@ -185,9 +175,7 @@ export const DashboardProducts: React.FC = () => {
             Управление каталогом товаров магазина
           </Text>
         </div>
-        <Button leftSection={<IconPlus size={16} />} onClick={handleOpenCreate}>
-          Добавить товар
-        </Button>
+        <Button onClick={handleOpenCreate}>Добавить товар</Button>
       </Group>
 
       {/* Filters and Controls */}
@@ -196,7 +184,6 @@ export const DashboardProducts: React.FC = () => {
           <TextInput
             label="Поиск по названию"
             placeholder="Введите название..."
-            leftSection={<IconSearch size={16} />}
             value={searchInput}
             onChange={(e) => handleSearchChange(e.currentTarget.value)}
           />
@@ -219,12 +206,7 @@ export const DashboardProducts: React.FC = () => {
           />
 
           {(search || categoryIdParam || sortByParam !== 'default') && (
-            <Button
-              variant="light"
-              color="gray"
-              leftSection={<IconFilterOff size={16} />}
-              onClick={handleClearFilters}
-            >
+            <Button variant="light" color="gray" onClick={handleClearFilters}>
               Сбросить
             </Button>
           )}
@@ -246,12 +228,7 @@ export const DashboardProducts: React.FC = () => {
 
       {/* State 2: Error */}
       {isError && (
-        <Alert
-          icon={<IconAlertCircle size={16} />}
-          title="Ошибка загрузки данных"
-          color="red"
-          variant="filled"
-        >
+        <Alert title="Ошибка загрузки данных" color="red" variant="filled">
           <Group justify="space-between" align="center">
             <Text size="sm">
               Не удалось загрузить список товаров. Проверьте соединение.
@@ -274,7 +251,6 @@ export const DashboardProducts: React.FC = () => {
         (products.length === 0 ? (
           <Paper p="xl" withBorder style={{ textAlign: 'center' }} radius="md">
             <Stack align="center" gap="xs">
-              <IconShoppingBag size={48} color="gray" />
               <Text fw={500} size="lg">
                 Товары не найдены
               </Text>
@@ -285,12 +261,7 @@ export const DashboardProducts: React.FC = () => {
                 <Button variant="default" onClick={handleClearFilters}>
                   Сбросить фильтры
                 </Button>
-                <Button
-                  leftSection={<IconPlus size={16} />}
-                  onClick={handleOpenCreate}
-                >
-                  Создать товар
-                </Button>
+                <Button onClick={handleOpenCreate}>Создать товар</Button>
               </Group>
             </Stack>
           </Paper>
@@ -304,7 +275,7 @@ export const DashboardProducts: React.FC = () => {
                     <Table.Th>Название</Table.Th>
                     <Table.Th>Категория</Table.Th>
                     <Table.Th style={{ width: 110 }}>Цена</Table.Th>
-                    <Table.Th style={{ width: 120, textAlign: 'right' }}>
+                    <Table.Th style={{ width: 180, textAlign: 'right' }}>
                       Действия
                     </Table.Th>
                   </Table.Tr>
@@ -341,26 +312,26 @@ export const DashboardProducts: React.FC = () => {
                       </Table.Td>
                       <Table.Td>
                         <Group gap="xs" justify="flex-end">
-                          <ActionIcon
-                            variant="subtle"
+                          <Button
+                            size="xs"
+                            variant="light"
                             color="blue"
                             onClick={() => handleOpenEdit(product)}
-                            title="Редактировать"
                           >
-                            <IconEdit size={18} />
-                          </ActionIcon>
-                          <ActionIcon
-                            variant="subtle"
+                            Изменить
+                          </Button>
+                          <Button
+                            size="xs"
+                            variant="light"
                             color="red"
                             onClick={() => handleOpenDelete(product)}
-                            title="Удалить"
                             loading={
                               deleteMutation.isPending &&
                               deletingProduct?.id === product.id
                             }
                           >
-                            <IconTrash size={18} />
-                          </ActionIcon>
+                            Удалить
+                          </Button>
                         </Group>
                       </Table.Td>
                     </Table.Tr>

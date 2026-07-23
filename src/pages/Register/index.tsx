@@ -12,12 +12,14 @@ import {
   Text,
   Anchor,
 } from '@mantine/core'
-import { IconAlertCircle, IconCheck } from '@tabler/icons-react'
+import { notifications } from '@mantine/notifications'
 import { useRegisterMutation } from '@/hooks/useRegisterQuery'
+import { useLoginMutation } from '@/hooks/useAuthQueries'
 
 export const Register: React.FC = () => {
   const navigate = useNavigate()
   const registerMutation = useRegisterMutation()
+  const loginMutation = useLoginMutation()
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -32,9 +34,23 @@ export const Register: React.FC = () => {
       {
         onSuccess: () => {
           setSuccessMessage(true)
-          setTimeout(() => {
-            navigate('/login')
-          }, 1500)
+          loginMutation.mutate(
+            { email, password },
+            {
+              onSuccess: () => {
+                notifications.show({
+                  title: 'Xush kelibsiz!',
+                  message:
+                    "Muvaffaqiyatli ro'yxatdan o'tdingiz va tizimga kirdingiz!",
+                  color: 'green',
+                })
+                navigate('/dashboard', { replace: true })
+              },
+              onError: () => {
+                navigate('/login', { replace: true })
+              },
+            }
+          )
         },
       }
     )
@@ -57,24 +73,13 @@ export const Register: React.FC = () => {
         <form onSubmit={handleSubmit}>
           <Stack>
             {successMessage && (
-              <Alert
-                icon={<IconCheck size={16} />}
-                title="Muvaffaqiyatli!"
-                color="green"
-                variant="filled"
-              >
-                Muvaffaqiyatli register bo'ldi! Login sahifasiga
-                yo'naltirilmoqdasiz...
+              <Alert title="Muvaffaqiyatli!" color="green" variant="filled">
+                Muvaffaqiyatli register bo'ldi! Daşbordga yo'naltirilmoqdasiz...
               </Alert>
             )}
 
             {registerMutation.isError && (
-              <Alert
-                icon={<IconAlertCircle size={16} />}
-                title="Xatolik"
-                color="red"
-                variant="filled"
-              >
+              <Alert title="Xatolik" color="red" variant="filled">
                 Ro'yxatdan o'tishda xatolik yuz berdi. Qaytadan urinib ko'ring.
               </Alert>
             )}

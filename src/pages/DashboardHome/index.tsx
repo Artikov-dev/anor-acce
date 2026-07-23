@@ -8,16 +8,8 @@ import {
   Stack,
   Skeleton,
   Alert,
-  ThemeIcon,
   Button,
 } from '@mantine/core'
-import {
-  IconShoppingBag,
-  IconCategory,
-  IconCurrencyDollar,
-  IconAlertCircle,
-  IconArrowUpRight,
-} from '@tabler/icons-react'
 import { useProductsQuery } from '@/hooks/useProducts'
 import { useCategoriesQuery } from '@/hooks/useCategories'
 import { useNavigate } from 'react-router'
@@ -55,21 +47,18 @@ export const DashboardHome: React.FC = () => {
     {
       title: 'Всего товаров',
       value: totalProducts.toString(),
-      icon: IconShoppingBag,
       color: 'blue',
       link: '/dashboard/products',
     },
     {
       title: 'Всего категорий',
       value: totalCategories.toString(),
-      icon: IconCategory,
       color: 'teal',
       link: '/dashboard/categories',
     },
     {
       title: 'Средняя цена товара',
       value: `$${averagePrice}`,
-      icon: IconCurrencyDollar,
       color: 'violet',
       link: '/dashboard/products',
     },
@@ -91,12 +80,7 @@ export const DashboardHome: React.FC = () => {
           <Skeleton height={120} radius="md" />
         </SimpleGrid>
       ) : isError ? (
-        <Alert
-          icon={<IconAlertCircle size={16} />}
-          title="Ошибка загрузки аналитики"
-          color="red"
-          variant="filled"
-        >
+        <Alert title="Ошибка загрузки аналитики" color="red" variant="filled">
           <Group justify="space-between" align="center">
             <Text size="sm">Не удалось загрузить данные дашборда.</Text>
             <Button
@@ -135,21 +119,12 @@ export const DashboardHome: React.FC = () => {
                     {stat.value}
                   </Title>
                 </Stack>
-                <ThemeIcon
-                  size={48}
-                  radius="md"
-                  color={stat.color}
-                  variant="light"
-                >
-                  <stat.icon size={26} />
-                </ThemeIcon>
               </Group>
 
               <Group gap={4} mt="md" align="center">
                 <Text size="xs" c="blue" fw={500}>
-                  Перейти в раздел
+                  Перейти в раздел &rarr;
                 </Text>
-                <IconArrowUpRight size={14} color="#228be6" />
               </Group>
             </Paper>
           ))}

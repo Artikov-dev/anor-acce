@@ -14,7 +14,6 @@ import {
 import { useForm } from '@mantine/form'
 import { notifications } from '@mantine/notifications'
 import type { AxiosError } from 'axios'
-import { IconAlertCircle } from '@tabler/icons-react'
 import { useLoginMutation } from '@/hooks/useAuthQueries'
 import { useAuthStore } from '@/store/useAuthStore'
 
@@ -76,12 +75,7 @@ export const Login: React.FC = () => {
         <form onSubmit={handleSubmit}>
           <Stack>
             {loginMutation.isError && (
-              <Alert
-                icon={<IconAlertCircle size={16} />}
-                title="Ошибка"
-                color="red"
-                variant="filled"
-              >
+              <Alert title="Ошибка" color="red" variant="filled">
                 Неверный email или пароль. Попробуйте еще раз.
               </Alert>
             )}

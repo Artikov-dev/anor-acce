@@ -12,12 +12,6 @@ import {
   Box,
   Skeleton,
 } from '@mantine/core'
-import {
-  IconLayoutDashboard,
-  IconShoppingBag,
-  IconCategory,
-  IconLogout,
-} from '@tabler/icons-react'
 import { useProfileQuery, useLogout } from '@/hooks/useAuthQueries'
 import { useAuthStore } from '@/store/useAuthStore'
 
@@ -38,18 +32,15 @@ export const DashboardLayout: React.FC = () => {
   const navItems = [
     {
       label: 'Главная',
-      icon: IconLayoutDashboard,
       path: '/dashboard',
       exact: true,
     },
     {
       label: 'Товары',
-      icon: IconShoppingBag,
       path: '/dashboard/products',
     },
     {
       label: 'Категории',
-      icon: IconCategory,
       path: '/dashboard/categories',
     },
   ]
@@ -63,7 +54,6 @@ export const DashboardLayout: React.FC = () => {
       <AppShell.Header p="xs">
         <Group justify="space-between" h="100%" px="md">
           <Group gap="xs">
-            <IconShoppingBag size={28} color="#228be6" />
             <Title
               order={3}
               style={{ cursor: 'pointer' }}
@@ -97,7 +87,6 @@ export const DashboardLayout: React.FC = () => {
               variant="light"
               color="red"
               size="xs"
-              leftSection={<IconLogout size={16} />}
               onClick={handleLogout}
             >
               Выйти
@@ -120,7 +109,6 @@ export const DashboardLayout: React.FC = () => {
               <NavLink
                 key={item.path}
                 label={item.label}
-                leftSection={<item.icon size={20} stroke={1.5} />}
                 active={isActive}
                 onClick={() => navigate(item.path)}
                 style={{ borderRadius: 8 }}
