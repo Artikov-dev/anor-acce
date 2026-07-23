@@ -59,9 +59,26 @@ export const Home = () => {
                 Discover ultimate driving comfort. Rent or buy your dream car
                 today and embark on an adventure with no limits!
               </Text>
-              <Button size="lg" bg={orangeBtn} radius="md">
-                View all cars
-              </Button>
+              <Group gap="md">
+                <Button
+                  size="lg"
+                  bg={orangeBtn}
+                  radius="md"
+                  onClick={() => navigate('/catalog')}
+                >
+                  View all cars
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  c="white"
+                  style={{ borderColor: 'white' }}
+                  radius="md"
+                  onClick={() => navigate('/register')}
+                >
+                  Ro'yxatdan o'tish
+                </Button>
+              </Group>
             </Grid.Col>
 
             <Grid.Col span={{ base: 12, md: 5 }}>

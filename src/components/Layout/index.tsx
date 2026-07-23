@@ -83,19 +83,35 @@ export const Layout = () => {
               </Text>
             </Group>
 
-            {}
-            <Group gap="sm">
-              <ThemeIcon radius="xl" size="xl" color="#ff0000ff">
-                <IconPhoneFilled size={20} />
-              </ThemeIcon>
-              <Stack gap={0}>
-                <Text size="sm" c="dimmed" lh={1.2}>
-                  Need help?
-                </Text>
-                <Text size="sm" fw={700} lh={1.2}>
-                  +996 247-1680
-                </Text>
-              </Stack>
+            {/* Right section: Help + Auth Buttons */}
+            <Group gap="md">
+              <Group gap="sm">
+                <ThemeIcon radius="xl" size="xl" color="#ff0000ff">
+                  <IconPhoneFilled size={20} />
+                </ThemeIcon>
+                <Stack gap={0}>
+                  <Text size="sm" c="dimmed" lh={1.2}>
+                    Need help?
+                  </Text>
+                  <Text size="sm" fw={700} lh={1.2}>
+                    +996 247-1680
+                  </Text>
+                </Stack>
+              </Group>
+
+              <Group gap="xs">
+                <Button
+                  component={Link}
+                  to="/login"
+                  variant="default"
+                  radius="md"
+                >
+                  Kirish
+                </Button>
+                <Button component={Link} to="/register" color="red" radius="md">
+                  Ro'yxatdan o'tish
+                </Button>
+              </Group>
             </Group>
           </Group>
         </Container>

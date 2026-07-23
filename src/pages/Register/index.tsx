@@ -63,7 +63,7 @@ export const Register: React.FC = () => {
                 color="green"
                 variant="filled"
               >
-                Muvaffaqiyatli ro'yxatdan o'tdingiz! Login sahifasiga
+                Muvaffaqiyatli register bo'ldi! Login sahifasiga
                 yo'naltirilmoqdasiz...
               </Alert>
             )}
