@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { useCategories } from '../../hooks/useProducts'
 import { useSearchRequestParams } from '../../hooks/useSearchRequestParams'
 import type { TProductParams } from '../../types/product'
+import type { ICategory } from '../../types/category'
 
 export const ProductFilter = () => {
   const { searchParams, setSearchParams } = useSearchRequestParams<
@@ -30,15 +31,15 @@ export const ProductFilter = () => {
 
   useEffect(() => {
     setSearchParams({ key: 'search', value: debouncedSearch })
-  }, [debouncedSearch])
+  }, [debouncedSearch, setSearchParams])
 
   useEffect(() => {
     setSearchParams({ key: 'price_min', value: debouncedPriceMin })
-  }, [debouncedPriceMin])
+  }, [debouncedPriceMin, setSearchParams])
 
   useEffect(() => {
     setSearchParams({ key: 'price_max', value: debouncedPriceMax })
-  }, [debouncedPriceMax])
+  }, [debouncedPriceMax, setSearchParams])
 
   const onCategoryClick = (categoryId: string) => {
     setSearchParams({ key: 'categoryId', value: categoryId })
@@ -61,7 +62,7 @@ export const ProductFilter = () => {
         Все
       </Button>
 
-      {categories?.map((category) => (
+      {categories?.map((category: ICategory) => (
         <Button
           key={category.id}
           radius="xl"

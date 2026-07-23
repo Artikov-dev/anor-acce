@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { useNavigate, Link } from 'react-router'
+import React from 'react'
+import { useNavigate } from 'react-router'
 import {
   TextInput,
   PasswordInput,
@@ -9,10 +9,11 @@ import {
   Container,
   Stack,
   Text,
-  Anchor,
   Alert,
 } from '@mantine/core'
+import { useForm } from '@mantine/form'
 import { notifications } from '@mantine/notifications'
+import type { AxiosError } from 'axios'
 import { IconAlertCircle } from '@tabler/icons-react'
 import { useLoginMutation } from '@/hooks/useAuthQueries'
 import { useAuthStore } from '@/store/useAuthStore'
@@ -22,44 +23,53 @@ export const Login: React.FC = () => {
   const loginMutation = useLoginMutation()
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated)
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-
   React.useEffect(() => {
     if (isAuthenticated) {
-      navigate('/')
+      navigate('/dashboard', { replace: true })
     }
   }, [isAuthenticated, navigate])
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+  const form = useForm({
+    initialValues: {
+      email: 'john@mail.com',
+      password: 'changeme',
+    },
 
-    loginMutation.mutate(
-      { email, password },
-      {
-        onSuccess: () => {
-          notifications.show({
-            title: 'Muvaffaqiyatli!',
-            message: 'Tizimga muvaffaqiyatli kirdingiz',
-            color: 'green',
-          })
-          navigate('/')
-        },
-      }
-    )
-  }
+    validate: {
+      email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Некорректный email'),
+      password: (value) =>
+        value.length >= 4 ? null : 'Пароль должен содержать минимум 4 символа',
+    },
+  })
+
+  const handleSubmit = form.onSubmit((values) => {
+    loginMutation.mutate(values, {
+      onSuccess: () => {
+        notifications.show({
+          title: 'Успешно!',
+          message: 'Вы успешно вошли в систему',
+          color: 'green',
+        })
+        navigate('/dashboard', { replace: true })
+      },
+      onError: (err: AxiosError<{ message?: string }>) => {
+        notifications.show({
+          title: 'Ошибка авторизации',
+          message: err?.response?.data?.message || 'Неверный email или пароль',
+          color: 'red',
+        })
+      },
+    })
+  })
 
   return (
-    <Container size={420} my={40}>
+    <Container size={420} my={60}>
       <Title ta="center" fw={900}>
-        Tizimga kirish
+        Вход в админ-панель
       </Title>
 
       <Text c="dimmed" size="sm" ta="center" mt={5}>
-        Hali hisobingiz yo'qmi?{' '}
-        <Anchor size="sm" component={Link} to="/register">
-          Ro'yxatdan o'tish
-        </Anchor>
+        Тестовые данные: <b>john@mail.com</b> / <b>changeme</b>
       </Text>
 
       <Paper withBorder shadow="md" p={30} mt={30} radius="md">
@@ -68,28 +78,26 @@ export const Login: React.FC = () => {
             {loginMutation.isError && (
               <Alert
                 icon={<IconAlertCircle size={16} />}
-                title="Xatolik"
+                title="Ошибка"
                 color="red"
                 variant="filled"
               >
-                Email yoki parol noto'g'ri. Qaytadan urinib ko'ring.
+                Неверный email или пароль. Попробуйте еще раз.
               </Alert>
             )}
 
             <TextInput
               label="Email"
-              placeholder="email@example.com"
+              placeholder="john@mail.com"
               required
-              value={email}
-              onChange={(e) => setEmail(e.currentTarget.value)}
+              {...form.getInputProps('email')}
             />
 
             <PasswordInput
-              label="Parol"
-              placeholder="Sizning parolingiz"
+              label="Пароль"
+              placeholder="••••••••"
               required
-              value={password}
-              onChange={(e) => setPassword(e.currentTarget.value)}
+              {...form.getInputProps('password')}
             />
 
             <Button
@@ -98,7 +106,7 @@ export const Login: React.FC = () => {
               mt="xl"
               loading={loginMutation.isPending}
             >
-              Kirish
+              Войти
             </Button>
           </Stack>
         </form>

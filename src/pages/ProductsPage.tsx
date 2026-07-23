@@ -19,7 +19,7 @@ import { ProductFilter } from '../components/products/ProductFilter'
 import { CreateProduct } from '../components/products/CreateProduct'
 import { useProducts } from '../hooks/useProducts'
 import { useSearchRequestParams } from '../hooks/useSearchRequestParams'
-import type { TProductParams } from '../types/product'
+import type { TProductParams, IProduct } from '../types/product'
 
 const PAGE_SIZE = 6
 
@@ -35,8 +35,8 @@ export function ProductsPage() {
 
   const { data, isLoading, isError, error } = useProducts(params)
 
-  const products = data?.data ?? []
-  const totalPages = Math.ceil((data?.total ?? 0) / PAGE_SIZE)
+  const products = Array.isArray(data) ? data : []
+  const totalPages = Math.ceil((products.length || 0) / PAGE_SIZE)
 
   return (
     <Container size="xl" py="xl">
@@ -73,7 +73,7 @@ export function ProductsPage() {
             </Center>
           ) : (
             <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="xl">
-              {products.map((product) => (
+              {products.map((product: IProduct) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </SimpleGrid>

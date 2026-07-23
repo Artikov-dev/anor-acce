@@ -54,6 +54,8 @@ export const useProfileQuery = () => {
   })
 }
 
+export const useProfile = useProfileQuery
+
 export const useLogout = () => {
   const queryClient = useQueryClient()
   const logoutStore = useAuthStore((state) => state.logout)

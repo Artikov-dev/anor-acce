@@ -15,12 +15,31 @@ export interface IProduct {
   images: string[]
 }
 
-export interface ICommonParams {
-  page?: string
-  size?: string
-  search?: string
+export interface CreateProductDto {
+  title: string
+  price: number
+  description: string
+  categoryId: number
+  images: string[]
 }
 
-export type TProductParams = ICommonParams & {
-  categoryId?: string
+export interface UpdateProductDto {
+  title?: string
+  price?: number
+  description?: string
+  categoryId?: number
+  images?: string[]
 }
+
+export interface ProductQueryParams {
+  title?: string
+  search?: string
+  categoryId?: number | string
+  offset?: number
+  limit?: number
+  page?: number | string
+  size?: number | string
+  sortBy?: 'price_asc' | 'price_desc' | 'default'
+}
+
+export type TProductParams = ProductQueryParams

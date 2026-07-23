@@ -18,7 +18,11 @@ export const Product = () => {
   const { id } = useParams()
   const navigate = useNavigate()
 
-  const { data: product, isLoading, isError } = useProductById(id)
+  const {
+    data: product,
+    isLoading,
+    isError,
+  } = useProductById(id ? Number(id) : null)
 
   if (isLoading) {
     return (

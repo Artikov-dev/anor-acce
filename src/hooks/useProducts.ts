@@ -1,81 +1,119 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { productsApi, categoriesApi } from '../api/products'
-import type { TProductParams, IProduct } from '../types/product'
+import {
+  getProductsApi,
+  getProductApi,
+  createProductApi,
+  updateProductApi,
+  deleteProductApi,
+} from '@/api/products'
+import type {
+  ProductQueryParams,
+  CreateProductDto,
+  UpdateProductDto,
+  IProduct,
+} from '@/types/product'
 
-export const PRODUCTS_KEY = 'products-key'
-export const CATEGORIES_KEY = 'categories-key'
-
-export const useProducts = (params?: TProductParams) => {
-  const { page, size, ...filters } = params ?? {}
-
-  const current = Number(page ?? 1)
-  const limit = Number(size ?? 6)
-  const start = (current - 1) * limit
-
+export const useProductsQuery = (params?: ProductQueryParams) => {
   return useQuery({
-    queryKey: [PRODUCTS_KEY, filters],
-    queryFn: () => productsApi.get(filters).then((resp) => resp.data),
-    select: (all) => ({
-      data: all.slice(start, start + limit),
-      total: all.length,
-    }),
+    queryKey: ['products', params],
+    queryFn: () => getProductsApi(params),
+    staleTime: 1000 * 60 * 2,
   })
 }
 
-export const useProductById = (id?: string) =>
-  useQuery({
-    queryKey: [PRODUCTS_KEY, id],
-    queryFn: () => productsApi.getById(Number(id)).then((resp) => resp.data),
-    enabled: Boolean(id),
+export const useProductQuery = (id: number | null) => {
+  return useQuery({
+    queryKey: ['products', id],
+    queryFn: () => getProductApi(id!),
+    enabled: !!id,
   })
+}
 
-export const useCategories = () =>
-  useQuery({
-    queryKey: [CATEGORIES_KEY],
-    queryFn: () => categoriesApi.get().then((resp) => resp.data),
-    staleTime: Infinity,
-  })
+export const usePrefetchProduct = () => {
+  const queryClient = useQueryClient()
 
-export const useCreateProduct = () => {
+  return (id: number) => {
+    queryClient.prefetchQuery({
+      queryKey: ['products', id],
+      queryFn: () => getProductApi(id),
+      staleTime: 1000 * 60 * 5,
+    })
+  }
+}
+
+export const useCreateProductMutation = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: (data: Partial<IProduct>) =>
-      productsApi.create(data).then((res) => res.data),
-    onSuccess: (newProduct) => {
-      queryClient.setQueriesData(
-        { queryKey: [PRODUCTS_KEY] },
-        (oldData: IProduct[] | undefined) => {
-          if (!oldData) return oldData
-          if (Array.isArray(oldData)) {
-            return [newProduct, ...oldData]
-          }
-          return oldData
+    mutationFn: (dto: CreateProductDto) => createProductApi(dto),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['products'] })
+    },
+  })
+}
+
+export const useUpdateProductMutation = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: ({
+      id,
+      dto,
+      data,
+    }: {
+      id: number
+      dto?: UpdateProductDto
+      data?: UpdateProductDto
+    }) => updateProductApi(id, (dto || data)!),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['products'] })
+    },
+  })
+}
+
+export const useDeleteProductMutation = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (id: number) => deleteProductApi(id),
+    onMutate: async (deletedId: number) => {
+      // Cancel outgoing refetches so they don't overwrite optimistic update
+      await queryClient.cancelQueries({ queryKey: ['products'] })
+
+      // Snapshot all matching product query cache entries
+      const previousQueries = queryClient.getQueriesData<IProduct[]>({
+        queryKey: ['products'],
+      })
+
+      // Optimistically update matching caches
+      queryClient.setQueriesData<IProduct[]>(
+        { queryKey: ['products'] },
+        (oldData) => {
+          if (!oldData) return []
+          return oldData.filter((item) => item.id !== deletedId)
         }
       )
+
+      return { previousQueries }
+    },
+    onError: (_err, _deletedId, context) => {
+      // Rollback to previous queries snapshot if mutation fails
+      if (context?.previousQueries) {
+        context.previousQueries.forEach(([queryKey, data]) => {
+          queryClient.setQueryData(queryKey, data)
+        })
+      }
+    },
+    onSettled: () => {
+      // Invalidate to get exact server state
+      queryClient.invalidateQueries({ queryKey: ['products'] })
     },
   })
 }
 
-export const useUpdateProduct = () => {
-  const queryClient = useQueryClient()
-
-  return useMutation({
-    mutationFn: ({ id, data }: { id: number; data: Partial<IProduct> }) =>
-      productsApi.update(id, data).then((res) => res.data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [PRODUCTS_KEY] })
-    },
-  })
-}
-
-export const useDeleteProduct = () => {
-  const queryClient = useQueryClient()
-
-  return useMutation({
-    mutationFn: (id: number) => productsApi.delete(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [PRODUCTS_KEY] })
-    },
-  })
-}
+export const useProducts = useProductsQuery
+export const useProductById = useProductQuery
+export const useCreateProduct = useCreateProductMutation
+export const useUpdateProduct = useUpdateProductMutation
+export const useDeleteProduct = useDeleteProductMutation
+export { useCategoriesQuery as useCategories } from './useCategories'
