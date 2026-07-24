@@ -13,7 +13,6 @@ import {
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { notifications } from '@mantine/notifications'
-import type { AxiosError } from 'axios'
 import { useLoginMutation } from '@/hooks/useAuthQueries'
 import { useAuthStore } from '@/store/useAuthStore'
 
@@ -51,7 +50,7 @@ export const Login: React.FC = () => {
         })
         navigate('/dashboard', { replace: true })
       },
-      onError: (err: AxiosError<{ message?: string }>) => {
+      onError: (err) => {
         notifications.show({
           title: 'Ошибка авторизации',
           message: err?.response?.data?.message || 'Неверный email или пароль',

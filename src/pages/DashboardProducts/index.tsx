@@ -1,5 +1,6 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { useSearchParams } from 'react-router'
+import { useDebouncedValue } from '@mantine/hooks'
 import {
   Title,
   Button,
@@ -26,14 +27,12 @@ import { useCategoriesQuery } from '@/hooks/useCategories'
 import { ProductModal } from '@/components/ProductModal/ProductModal'
 import type { IProduct } from '@/types/product'
 import { notifications } from '@mantine/notifications'
-import type { AxiosError } from 'axios'
 
 const PAGE_SIZE = 10
 
 export const DashboardProducts: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams()
 
-  // Extract filters from URL search parameters
   const search = searchParams.get('search') || ''
   const categoryIdParam = searchParams.get('category') || ''
   const pageParam = parseInt(searchParams.get('page') || '1', 10)
@@ -41,45 +40,11 @@ export const DashboardProducts: React.FC = () => {
     (searchParams.get('sortBy') as 'price_asc' | 'price_desc' | 'default') ||
     'default'
 
-  // Debounced search input local state for smooth typing
   const [searchInput, setSearchInput] = useState(search)
+  const [debouncedSearch] = useDebouncedValue(searchInput, 400)
 
-  // Fetch categories for filter dropdown
   const { data: categories = [] } = useCategoriesQuery()
 
-  // Query parameters object for TanStack Query
-  const queryParams = useMemo(() => {
-    return {
-      title: search || undefined,
-      categoryId: categoryIdParam ? Number(categoryIdParam) : undefined,
-      offset: (pageParam - 1) * PAGE_SIZE,
-      limit: PAGE_SIZE,
-      sortBy: sortByParam,
-    }
-  }, [search, categoryIdParam, pageParam, sortByParam])
-
-  // Fetch products with reactive queryKey [products, queryParams]
-  const {
-    data: products = [],
-    isLoading,
-    isError,
-    refetch,
-  } = useProductsQuery(queryParams)
-
-  // Hover prefetching helper
-  const prefetchProduct = usePrefetchProduct()
-
-  // Optimistic deletion mutation
-  const deleteMutation = useDeleteProductMutation()
-
-  // Modals state
-  const [productModalOpened, setProductModalOpened] = useState(false)
-  const [editingProduct, setEditingProduct] = useState<IProduct | null>(null)
-
-  const [deleteModalOpened, setDeleteModalOpened] = useState(false)
-  const [deletingProduct, setDeletingProduct] = useState<IProduct | null>(null)
-
-  // Helper to update URL params
   const updateUrlParams = (newParams: Record<string, string | null>) => {
     const updated = new URLSearchParams(searchParams)
     Object.entries(newParams).forEach(([key, val]) => {
@@ -92,9 +57,41 @@ export const DashboardProducts: React.FC = () => {
     setSearchParams(updated)
   }
 
+  useEffect(() => {
+    if (debouncedSearch !== search) {
+      updateUrlParams({ search: debouncedSearch, page: '1' })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedSearch])
+
+  const queryParams = useMemo(() => {
+    return {
+      title: search || undefined,
+      categoryId: categoryIdParam ? Number(categoryIdParam) : undefined,
+      offset: (pageParam - 1) * PAGE_SIZE,
+      limit: PAGE_SIZE,
+      sortBy: sortByParam,
+    }
+  }, [search, categoryIdParam, pageParam, sortByParam])
+
+  const {
+    data: products = [],
+    isLoading,
+    isError,
+    refetch,
+  } = useProductsQuery(queryParams)
+
+  const prefetchProduct = usePrefetchProduct()
+  const deleteMutation = useDeleteProductMutation()
+
+  const [productModalOpened, setProductModalOpened] = useState(false)
+  const [editingProduct, setEditingProduct] = useState<IProduct | null>(null)
+
+  const [deleteModalOpened, setDeleteModalOpened] = useState(false)
+  const [deletingProduct, setDeletingProduct] = useState<IProduct | null>(null)
+
   const handleSearchChange = (val: string) => {
     setSearchInput(val)
-    updateUrlParams({ search: val, page: '1' })
   }
 
   const handleCategoryChange = (val: string | null) => {
@@ -143,7 +140,7 @@ export const DashboardProducts: React.FC = () => {
           color: 'green',
         })
       },
-      onError: (err: AxiosError<{ message?: string }>) => {
+      onError: (err) => {
         notifications.show({
           title: 'Ошибка отката',
           message:
@@ -178,7 +175,6 @@ export const DashboardProducts: React.FC = () => {
         <Button onClick={handleOpenCreate}>Добавить товар</Button>
       </Group>
 
-      {/* Filters and Controls */}
       <Paper p="sm" withBorder radius="md">
         <Group grow align="flex-end">
           <TextInput
@@ -213,7 +209,6 @@ export const DashboardProducts: React.FC = () => {
         </Group>
       </Paper>
 
-      {/* State 1: Loading */}
       {isLoading && (
         <Paper p="md" withBorder radius="md">
           <Stack gap="sm">
@@ -226,7 +221,6 @@ export const DashboardProducts: React.FC = () => {
         </Paper>
       )}
 
-      {/* State 2: Error */}
       {isError && (
         <Alert title="Ошибка загрузки данных" color="red" variant="filled">
           <Group justify="space-between" align="center">
@@ -245,7 +239,6 @@ export const DashboardProducts: React.FC = () => {
         </Alert>
       )}
 
-      {/* State 3: Content / Empty */}
       {!isLoading &&
         !isError &&
         (products.length === 0 ? (
@@ -284,7 +277,6 @@ export const DashboardProducts: React.FC = () => {
                   {products.map((product) => (
                     <Table.Tr
                       key={product.id}
-                      // REQUIREMENT: prefetchQuery on row hover
                       onMouseEnter={() => prefetchProduct(product.id)}
                     >
                       <Table.Td>
@@ -340,7 +332,6 @@ export const DashboardProducts: React.FC = () => {
               </Table>
             </Paper>
 
-            {/* Pagination Controls */}
             <Group justify="space-between" align="center" mt="sm">
               <Text size="sm" c="dimmed">
                 Показано товаров: {products.length}
@@ -358,14 +349,12 @@ export const DashboardProducts: React.FC = () => {
           </>
         ))}
 
-      {/* Modal for Create & Edit */}
       <ProductModal
         opened={productModalOpened}
         onClose={() => setProductModalOpened(false)}
         productToEdit={editingProduct}
       />
 
-      {/* Confirmation Modal for Delete */}
       <Modal
         opened={deleteModalOpened}
         onClose={() => setDeleteModalOpened(false)}

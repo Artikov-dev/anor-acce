@@ -19,7 +19,6 @@ import {
 import { CategoryModal } from '@/components/CategoryModal/CategoryModal'
 import type { ICategory } from '@/types/category'
 import { notifications } from '@mantine/notifications'
-import type { AxiosError } from 'axios'
 
 export const DashboardCategories: React.FC = () => {
   const { data: categories, isLoading, isError, refetch } = useCategoriesQuery()
@@ -60,11 +59,11 @@ export const DashboardCategories: React.FC = () => {
         setDeleteModalOpened(false)
         setDeletingCategory(null)
       },
-      onError: (err: AxiosError<{ message?: string }>) => {
+      onError: (err) => {
         notifications.show({
           title: 'Ошибка',
           message:
-            err.response?.data?.message || 'Не удалось удалить категорию',
+            err?.response?.data?.message || 'Не удалось удалить категорию',
           color: 'red',
         })
       },
@@ -83,7 +82,6 @@ export const DashboardCategories: React.FC = () => {
         <Button onClick={handleOpenCreate}>Добавить категорию</Button>
       </Group>
 
-      {/* State 1: Loading */}
       {isLoading && (
         <Paper p="md" withBorder>
           <Stack gap="sm">
@@ -95,7 +93,6 @@ export const DashboardCategories: React.FC = () => {
         </Paper>
       )}
 
-      {/* State 2: Error */}
       {isError && (
         <Alert title="Ошибка загрузки" color="red" variant="filled">
           <Group justify="space-between" align="center">
@@ -112,7 +109,6 @@ export const DashboardCategories: React.FC = () => {
         </Alert>
       )}
 
-      {/* State 3: Content / Empty */}
       {!isLoading &&
         !isError &&
         categories &&
@@ -187,14 +183,12 @@ export const DashboardCategories: React.FC = () => {
           </Paper>
         ))}
 
-      {/* Modal for Create & Edit */}
       <CategoryModal
         opened={modalOpened}
         onClose={() => setModalOpened(false)}
         categoryToEdit={editingCategory}
       />
 
-      {/* Confirmation Modal for Delete */}
       <Modal
         opened={deleteModalOpened}
         onClose={() => setDeleteModalOpened(false)}

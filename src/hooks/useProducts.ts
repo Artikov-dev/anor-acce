@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import type { AxiosError } from 'axios'
 import {
   getProductsApi,
   getProductApi,
@@ -44,7 +45,11 @@ export const usePrefetchProduct = () => {
 export const useCreateProductMutation = () => {
   const queryClient = useQueryClient()
 
-  return useMutation({
+  return useMutation<
+    IProduct,
+    AxiosError<{ message?: string }>,
+    CreateProductDto
+  >({
     mutationFn: (dto: CreateProductDto) => createProductApi(dto),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['products'] })
@@ -55,16 +60,12 @@ export const useCreateProductMutation = () => {
 export const useUpdateProductMutation = () => {
   const queryClient = useQueryClient()
 
-  return useMutation({
-    mutationFn: ({
-      id,
-      dto,
-      data,
-    }: {
-      id: number
-      dto?: UpdateProductDto
-      data?: UpdateProductDto
-    }) => updateProductApi(id, (dto || data)!),
+  return useMutation<
+    IProduct,
+    AxiosError<{ message?: string }>,
+    { id: number; dto?: UpdateProductDto; data?: UpdateProductDto }
+  >({
+    mutationFn: ({ id, dto, data }) => updateProductApi(id, (dto || data)!),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['products'] })
     },
@@ -74,18 +75,20 @@ export const useUpdateProductMutation = () => {
 export const useDeleteProductMutation = () => {
   const queryClient = useQueryClient()
 
-  return useMutation({
+  return useMutation<
+    boolean,
+    AxiosError<{ message?: string }>,
+    number,
+    { previousQueries: [readonly unknown[], IProduct[] | undefined][] }
+  >({
     mutationFn: (id: number) => deleteProductApi(id),
     onMutate: async (deletedId: number) => {
-      // Cancel outgoing refetches so they don't overwrite optimistic update
       await queryClient.cancelQueries({ queryKey: ['products'] })
 
-      // Snapshot all matching product query cache entries
       const previousQueries = queryClient.getQueriesData<IProduct[]>({
         queryKey: ['products'],
       })
 
-      // Optimistically update matching caches
       queryClient.setQueriesData<IProduct[]>(
         { queryKey: ['products'] },
         (oldData) => {
@@ -97,7 +100,6 @@ export const useDeleteProductMutation = () => {
       return { previousQueries }
     },
     onError: (_err, _deletedId, context) => {
-      // Rollback to previous queries snapshot if mutation fails
       if (context?.previousQueries) {
         context.previousQueries.forEach(([queryKey, data]) => {
           queryClient.setQueryData(queryKey, data)
@@ -105,7 +107,6 @@ export const useDeleteProductMutation = () => {
       }
     },
     onSettled: () => {
-      // Invalidate to get exact server state
       queryClient.invalidateQueries({ queryKey: ['products'] })
     },
   })

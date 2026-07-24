@@ -7,7 +7,6 @@ import {
   useUpdateCategoryMutation,
 } from '@/hooks/useCategories'
 import { notifications } from '@mantine/notifications'
-import type { AxiosError } from 'axios'
 
 interface CategoryModalProps {
   opened: boolean
@@ -64,7 +63,7 @@ export const CategoryModal: React.FC<CategoryModalProps> = ({
             onClose()
             form.reset()
           },
-          onError: (err: AxiosError<{ message?: string }>) => {
+          onError: (err) => {
             notifications.show({
               title: 'Ошибка',
               message:
@@ -85,7 +84,7 @@ export const CategoryModal: React.FC<CategoryModalProps> = ({
           onClose()
           form.reset()
         },
-        onError: (err: AxiosError<{ message?: string }>) => {
+        onError: (err) => {
           notifications.show({
             title: 'Ошибка',
             message:

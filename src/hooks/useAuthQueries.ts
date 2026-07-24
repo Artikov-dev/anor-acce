@@ -1,17 +1,23 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import type { AxiosError } from 'axios'
 import { loginApi, getProfileApi, registerApi } from '@/api/auth'
 import { useAuthStore } from '@/store/useAuthStore'
 import type {
   LoginCredentials,
   RegisterCredentials,
   UserProfile,
+  AuthResponse,
 } from '@/types/auth'
 
 export const useLoginMutation = () => {
   const queryClient = useQueryClient()
   const setAuth = useAuthStore((state) => state.setAuth)
 
-  return useMutation({
+  return useMutation<
+    { authData: AuthResponse; profile: UserProfile },
+    AxiosError<{ message?: string }>,
+    LoginCredentials
+  >({
     mutationFn: async (credentials: LoginCredentials) => {
       const authData = await loginApi(credentials)
       localStorage.setItem('access_token', authData.access_token)
@@ -26,7 +32,11 @@ export const useLoginMutation = () => {
 }
 
 export const useRegisterMutation = () => {
-  return useMutation({
+  return useMutation<
+    UserProfile,
+    AxiosError<{ message?: string }>,
+    RegisterCredentials
+  >({
     mutationFn: (credentials: RegisterCredentials) => registerApi(credentials),
   })
 }

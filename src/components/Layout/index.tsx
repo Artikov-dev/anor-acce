@@ -38,7 +38,6 @@ export const Layout = () => {
       <AppShell.Header>
         <Container size="xl" h="100%">
           <Group h="100%" px="md" justify="space-between">
-            {/* Logo */}
             <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
               <Group gap="xs">
                 <IconCar size={32} />
@@ -48,7 +47,6 @@ export const Layout = () => {
               </Group>
             </Link>
 
-            {/* Navigation links */}
             <Group gap="xl">
               <Text
                 component={Link}
@@ -92,7 +90,6 @@ export const Layout = () => {
               </Text>
             </Group>
 
-            {/* Right section: Help + Auth Buttons */}
             <Group gap="md">
               <Group gap="sm">
                 <ThemeIcon radius="xl" size="xl" color="#ff0000ff">

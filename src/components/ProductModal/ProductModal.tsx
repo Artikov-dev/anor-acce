@@ -18,7 +18,6 @@ import {
   useUpdateProductMutation,
 } from '@/hooks/useProducts'
 import { notifications } from '@mantine/notifications'
-import type { AxiosError } from 'axios'
 
 interface ProductModalProps {
   opened: boolean
@@ -64,7 +63,6 @@ export const ProductModal: React.FC<ProductModalProps> = ({
         title: productToEdit.title,
         price: productToEdit.price,
         description: productToEdit.description || '',
-        // REQUIREMENT: categoryId taken from product.category.id
         categoryId: String(productToEdit.category?.id || ''),
         image: productToEdit.images?.[0] || '',
       })
@@ -104,7 +102,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
             onClose()
             form.reset()
           },
-          onError: (err: AxiosError<{ message?: string }>) => {
+          onError: (err) => {
             notifications.show({
               title: 'Ошибка',
               message:
@@ -125,7 +123,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
           onClose()
           form.reset()
         },
-        onError: (err: AxiosError<{ message?: string }>) => {
+        onError: (err) => {
           notifications.show({
             title: 'Ошибка',
             message: err?.response?.data?.message || 'Не удалось создать товар',

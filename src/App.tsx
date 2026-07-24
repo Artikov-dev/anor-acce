@@ -7,6 +7,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import '@mantine/core/styles.css'
 import '@mantine/notifications/styles.css'
 import { router } from '@/routes/router'
+import { ErrorBoundary } from '@/components/ErrorBoundary/ErrorBoundary'
 
 const queryClient = new QueryClient()
 
@@ -20,7 +21,7 @@ const theme = createTheme({
       '#ff666a',
       '#ff333a',
       '#ff0009',
-      '#d90008', // primary shade
+      '#d90008',
       '#b30006',
       '#8c0005',
       '#660004',
@@ -31,14 +32,16 @@ const theme = createTheme({
 
 export const App = () => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <MantineProvider defaultColorScheme="light" theme={theme}>
-        <ModalsProvider>
-          <Notifications />
-          <RouterProvider router={router} />
-        </ModalsProvider>
-      </MantineProvider>
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <MantineProvider defaultColorScheme="light" theme={theme}>
+          <ModalsProvider>
+            <Notifications />
+            <RouterProvider router={router} />
+          </ModalsProvider>
+        </MantineProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </ErrorBoundary>
   )
 }

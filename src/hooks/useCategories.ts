@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import type { AxiosError } from 'axios'
 import {
   getCategoriesApi,
   getCategoryApi,
@@ -6,7 +7,11 @@ import {
   updateCategoryApi,
   deleteCategoryApi,
 } from '@/api/categories'
-import type { CreateCategoryDto, UpdateCategoryDto } from '@/types/category'
+import type {
+  ICategory,
+  CreateCategoryDto,
+  UpdateCategoryDto,
+} from '@/types/category'
 
 export const useCategoriesQuery = () => {
   return useQuery({
@@ -27,7 +32,11 @@ export const useCategoryQuery = (id: number | null) => {
 export const useCreateCategoryMutation = () => {
   const queryClient = useQueryClient()
 
-  return useMutation({
+  return useMutation<
+    ICategory,
+    AxiosError<{ message?: string }>,
+    CreateCategoryDto
+  >({
     mutationFn: (dto: CreateCategoryDto) => createCategoryApi(dto),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['categories'] })
@@ -38,7 +47,11 @@ export const useCreateCategoryMutation = () => {
 export const useUpdateCategoryMutation = () => {
   const queryClient = useQueryClient()
 
-  return useMutation({
+  return useMutation<
+    ICategory,
+    AxiosError<{ message?: string }>,
+    { id: number; dto: UpdateCategoryDto }
+  >({
     mutationFn: ({ id, dto }: { id: number; dto: UpdateCategoryDto }) =>
       updateCategoryApi(id, dto),
     onSuccess: () => {
@@ -50,7 +63,7 @@ export const useUpdateCategoryMutation = () => {
 export const useDeleteCategoryMutation = () => {
   const queryClient = useQueryClient()
 
-  return useMutation({
+  return useMutation<boolean, AxiosError<{ message?: string }>, number>({
     mutationFn: (id: number) => deleteCategoryApi(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['categories'] })
