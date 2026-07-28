@@ -2,19 +2,18 @@ import React from 'react'
 import { Navigate, Outlet } from 'react-router'
 import { useAuthStore } from '@/store/useAuthStore'
 
-interface ProtectedRouteProps {
+interface PublicRouteProps {
   children?: React.ReactNode
 }
 
-export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
+export const PublicRoute: React.FC<PublicRouteProps> = ({ children }) => {
   const token = useAuthStore((state) => state.token)
   const user = useAuthStore((state) => state.user)
 
-  if (!token) {
-    return <Navigate to="/login" replace />
-  }
-
-  if (user && user.role !== 'admin') {
+  if (token) {
+    if (user?.role === 'admin') {
+      return <Navigate to="/dashboard" replace />
+    }
     return <Navigate to="/catalog" replace />
   }
 
