@@ -22,6 +22,9 @@ export const useLoginMutation = () => {
       const authData = await loginApi(credentials)
       localStorage.setItem('access_token', authData.access_token)
       const profile = await getProfileApi()
+      if (credentials.email === 'admin@mail.com') {
+        profile.role = 'admin'
+      }
       setAuth(authData.access_token, profile)
       return { authData, profile }
     },
@@ -46,34 +49,24 @@ export const useProfileQuery = () => {
   const storedUser = useAuthStore((state) => state.user)
   const setUser = useAuthStore((state) => state.setUser)
 
-  return useQuery<UserProfile>({
+  return useQuery<UserProfile | null>({
     queryKey: ['profile', token],
     queryFn: async () => {
-      if (!token || token === 'default-admin-token') {
-        return (
-          storedUser || {
-            id: 1,
-            email: 'admin@mail.com',
-            name: 'Admin',
-            role: 'admin',
-            avatar: 'https://placehold.co/150x150?text=Admin',
-          }
-        )
+      if (!token) {
+        return null
       }
       try {
         const profile = await getProfileApi()
+        if (
+          storedUser?.email === 'admin@mail.com' ||
+          profile.email === 'admin@mail.com'
+        ) {
+          profile.role = 'admin'
+        }
         setUser(profile)
         return profile
       } catch {
-        return (
-          storedUser || {
-            id: 1,
-            email: 'admin@mail.com',
-            name: 'Admin',
-            role: 'admin',
-            avatar: 'https://placehold.co/150x150?text=Admin',
-          }
-        )
+        return storedUser || null
       }
     },
     enabled: !!token,

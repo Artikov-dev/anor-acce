@@ -19,12 +19,15 @@ import { ProductFilter } from '../components/products/ProductFilter'
 import { CreateProduct } from '../components/products/CreateProduct'
 import { useProducts } from '../hooks/useProducts'
 import { useSearchRequestParams } from '../hooks/useSearchRequestParams'
+import { useAuthStore } from '../store/useAuthStore'
 import type { TProductParams, IProduct } from '../types/product'
 
 const PAGE_SIZE = 6
 
 export function ProductsPage() {
   const [opened, setOpened] = useState(false)
+  const user = useAuthStore((state) => state.user)
+  const isAdmin = user?.role === 'admin'
 
   const { getDefaultSearchParams, setSearchParams } =
     useSearchRequestParams<TProductParams>({
@@ -51,9 +54,11 @@ export function ProductsPage() {
       <Stack gap={40} align="stretch">
         <Group justify="space-between">
           <Title order={2}>Каталог</Title>
-          <Button onClick={() => setOpened(true)} color="red">
-            + Mahsulot qo'shish
-          </Button>
+          {isAdmin && (
+            <Button onClick={() => setOpened(true)} color="red">
+              + Mahsulot qo'shish
+            </Button>
+          )}
         </Group>
 
         <ProductFilter />

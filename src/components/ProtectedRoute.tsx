@@ -10,20 +10,11 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const token = useAuthStore((state) => state.token)
   const user = useAuthStore((state) => state.user)
 
-  const effectiveToken = token || 'default-admin-token'
-  const effectiveUser = user || {
-    id: 1,
-    email: 'admin@mail.com',
-    name: 'Admin',
-    role: 'admin',
-    avatar: 'https://placehold.co/150x150?text=Admin',
-  }
-
-  if (!effectiveToken) {
+  if (!token) {
     return <Navigate to="/login" replace />
   }
 
-  if (effectiveUser && effectiveUser.role !== 'admin') {
+  if (user?.role !== 'admin') {
     return <Navigate to="/catalog" replace />
   }
 

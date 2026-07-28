@@ -4,11 +4,14 @@ import { notifications } from '@mantine/notifications'
 import { useState } from 'react'
 import type { IProduct } from '../../types/product'
 import { useDeleteProduct } from '../../hooks/useProducts'
+import { useAuthStore } from '@/store/useAuthStore'
 import { CreateProduct } from './CreateProduct'
 
 export const ProductCard = ({ product }: { product: IProduct }) => {
   const [editOpened, setEditOpened] = useState(false)
   const deleteMutation = useDeleteProduct()
+  const user = useAuthStore((state) => state.user)
+  const isAdmin = user?.role === 'admin'
 
   const handleDelete = () => {
     deleteMutation.mutate(Number(product.id), {
@@ -97,29 +100,31 @@ export const ProductCard = ({ product }: { product: IProduct }) => {
           >
             ${product.price}
           </Badge>
-          <Group gap="xs" pos="absolute" top={12} right={12}>
-            <Button
-              color="anor"
-              variant="white"
-              radius="xl"
-              size="xs"
-              onClick={() => setEditOpened(true)}
-              style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
-            >
-              Tahrirlash
-            </Button>
-            <Button
-              color="red"
-              variant="white"
-              radius="xl"
-              size="xs"
-              onClick={openDeleteModal}
-              loading={deleteMutation.isPending}
-              style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
-            >
-              O'chirish
-            </Button>
-          </Group>
+          {isAdmin && (
+            <Group gap="xs" pos="absolute" top={12} right={12}>
+              <Button
+                color="anor"
+                variant="white"
+                radius="xl"
+                size="xs"
+                onClick={() => setEditOpened(true)}
+                style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+              >
+                Tahrirlash
+              </Button>
+              <Button
+                color="red"
+                variant="white"
+                radius="xl"
+                size="xs"
+                onClick={openDeleteModal}
+                loading={deleteMutation.isPending}
+                style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+              >
+                O'chirish
+              </Button>
+            </Group>
+          )}
         </Card.Section>
 
         <Group justify="space-between" mt="xl" align="flex-start">
