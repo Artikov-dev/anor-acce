@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from 'react-router'
+import { createBrowserRouter } from 'react-router'
 import { Layout } from '@/components/Layout'
 import { DashboardLayout } from '@/components/DashboardLayout'
 import { ProductsPage } from '@/pages/ProductsPage'
@@ -11,6 +11,7 @@ import { Contact } from '@/pages/Contact'
 import { DashboardHome } from '@/pages/DashboardHome'
 import { DashboardProducts } from '@/pages/DashboardProducts'
 import { DashboardCategories } from '@/pages/DashboardCategories'
+import { Home } from '@/pages/Home'
 
 export const router = createBrowserRouter([
   {
@@ -45,7 +46,7 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Navigate to="/dashboard" replace />,
+        element: <Home />,
       },
       {
         path: 'catalog',

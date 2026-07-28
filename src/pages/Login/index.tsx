@@ -21,8 +21,8 @@ export const Login: React.FC = () => {
 
   const form = useForm({
     initialValues: {
-      email: 'admin@mail.com',
-      password: 'admin123',
+      email: 'john@mail.com',
+      password: 'changeme',
     },
 
     validate: {
