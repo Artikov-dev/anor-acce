@@ -6,22 +6,12 @@ import {
   SimpleGrid,
   Box,
   Group,
-  ThemeIcon,
   Stack,
   Card,
   Select,
   TextInput,
   Button,
 } from '@mantine/core'
-import {
-  IconMapPin,
-  IconMail,
-  IconPhone,
-  IconClock,
-  IconChevronDown,
-  IconCalendarEvent,
-} from '@tabler/icons-react'
-
 export const Contact = () => {
   const redBg = '#990033'
   const orangeBtn = '#F59E0B'
@@ -51,7 +41,6 @@ export const Contact = () => {
                 <Select
                   placeholder="Car type"
                   data={['SUV', 'Sedan', 'Coupe', 'Hatchback']}
-                  rightSection={<IconChevronDown size={16} />}
                   styles={{
                     input: {
                       backgroundColor: 'transparent',
@@ -63,7 +52,6 @@ export const Contact = () => {
                 <Select
                   placeholder="Place of rental"
                   data={['New York', 'London', 'Berlin', 'Paris']}
-                  rightSection={<IconChevronDown size={16} />}
                   styles={{
                     input: {
                       backgroundColor: 'transparent',
@@ -75,7 +63,6 @@ export const Contact = () => {
                 <Select
                   placeholder="Place of return"
                   data={['New York', 'London', 'Berlin', 'Paris']}
-                  rightSection={<IconChevronDown size={16} />}
                   styles={{
                     input: {
                       backgroundColor: 'transparent',
@@ -86,7 +73,6 @@ export const Contact = () => {
                 />
                 <TextInput
                   placeholder="Rental date"
-                  rightSection={<IconCalendarEvent size={16} color="white" />}
                   styles={{
                     input: {
                       backgroundColor: 'transparent',
@@ -97,7 +83,6 @@ export const Contact = () => {
                 />
                 <TextInput
                   placeholder="Return date"
-                  rightSection={<IconCalendarEvent size={16} color="white" />}
                   styles={{
                     input: {
                       backgroundColor: 'transparent',
@@ -127,9 +112,6 @@ export const Contact = () => {
 
         <SimpleGrid cols={{ base: 1, sm: 2, lg: 4 }} spacing="xl" mb={100}>
           <Group wrap="nowrap">
-            <ThemeIcon size={48} radius="xl" bg={orangeBtn}>
-              <IconMapPin size={24} />
-            </ThemeIcon>
             <Box>
               <Text size="sm" c="dimmed">
                 Address
@@ -138,9 +120,6 @@ export const Contact = () => {
             </Box>
           </Group>
           <Group wrap="nowrap">
-            <ThemeIcon size={48} radius="xl" bg={orangeBtn}>
-              <IconMail size={24} />
-            </ThemeIcon>
             <Box>
               <Text size="sm" c="dimmed">
                 Email
@@ -149,9 +128,6 @@ export const Contact = () => {
             </Box>
           </Group>
           <Group wrap="nowrap">
-            <ThemeIcon size={48} radius="xl" bg={orangeBtn}>
-              <IconPhone size={24} />
-            </ThemeIcon>
             <Box>
               <Text size="sm" c="dimmed">
                 Phone
@@ -160,9 +136,6 @@ export const Contact = () => {
             </Box>
           </Group>
           <Group wrap="nowrap">
-            <ThemeIcon size={48} radius="xl" bg={orangeBtn}>
-              <IconClock size={24} />
-            </ThemeIcon>
             <Box>
               <Text size="sm" c="dimmed">
                 Opening hours

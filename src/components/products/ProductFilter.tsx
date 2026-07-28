@@ -1,6 +1,5 @@
 import { Button, Group, TextInput, NumberInput } from '@mantine/core'
 import { useDebouncedValue } from '@mantine/hooks'
-import { RiSearchLine } from '@remixicon/react'
 import { useEffect, useState } from 'react'
 import { useCategories } from '../../hooks/useProducts'
 import { useSearchRequestParams } from '../../hooks/useSearchRequestParams'
@@ -79,7 +78,6 @@ export const ProductFilter = () => {
         w={200}
         radius="xl"
         placeholder="Поиск по названию"
-        leftSection={<RiSearchLine size={16} />}
         value={searchValue}
         onChange={(event) => setSearchValue(event.currentTarget.value)}
       />

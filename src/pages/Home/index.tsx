@@ -14,18 +14,6 @@ import {
   Title,
   Divider,
 } from '@mantine/core'
-import {
-  IconMapPin,
-  IconCar,
-  IconPigMoney,
-  IconCalendarEvent,
-  IconUsers,
-  IconAirConditioning,
-  IconManualGearbox,
-  IconBrandApple,
-  IconBrandGooglePlay,
-  IconChevronDown,
-} from '@tabler/icons-react'
 import { useNavigate } from 'react-router'
 const redBg = '#990033'
 const orangeBtn = '#F59E0B'
@@ -90,26 +78,17 @@ export const Home = () => {
                   <Select
                     placeholder="Car type"
                     data={['SUV', 'Sedan', 'Coupe', 'Hatchback']}
-                    rightSection={<IconChevronDown size={16} />}
                   />
                   <Select
                     placeholder="Pick-up location"
                     data={['New York', 'London', 'Berlin', 'Paris']}
-                    rightSection={<IconChevronDown size={16} />}
                   />
                   <Select
                     placeholder="Drop-off location"
                     data={['New York', 'London', 'Berlin', 'Paris']}
-                    rightSection={<IconChevronDown size={16} />}
                   />
-                  <TextInput
-                    placeholder="Pick-up date"
-                    rightSection={<IconCalendarEvent size={16} />}
-                  />
-                  <TextInput
-                    placeholder="Return date"
-                    rightSection={<IconCalendarEvent size={16} />}
-                  />
+                  <TextInput placeholder="Pick-up date" />
+                  <TextInput placeholder="Return date" />
                   <Button fullWidth size="md" bg={orangeBtn} mt="sm">
                     Book now
                   </Button>
@@ -123,18 +102,12 @@ export const Home = () => {
       <Container size="xl" py={80}>
         <SimpleGrid cols={{ base: 1, md: 3 }} spacing={50}>
           <Stack align="center" ta="center">
-            <ThemeIcon size={64} radius="xl" variant="light" color="gray">
-              <IconMapPin size={32} stroke={1.5} color="black" />
-            </ThemeIcon>
             <Title order={4}>Availability</Title>
             <Text c="dimmed" size="sm">
               Discover local and international car rentals at affordable rates.
             </Text>
           </Stack>
           <Stack align="center" ta="center">
-            <ThemeIcon size={64} radius="xl" variant="light" color="gray">
-              <IconCar size={32} stroke={1.5} color="black" />
-            </ThemeIcon>
             <Title order={4}>Comfort</Title>
             <Text c="dimmed" size="sm">
               Provide local & international car rentals at a price you can't
@@ -142,9 +115,6 @@ export const Home = () => {
             </Text>
           </Stack>
           <Stack align="center" ta="center">
-            <ThemeIcon size={64} radius="xl" variant="light" color="gray">
-              <IconPigMoney size={32} stroke={1.5} color="black" />
-            </ThemeIcon>
             <Title order={4}>Savings</Title>
             <Text c="dimmed" size="sm">
               Provide local & international car rentals at a price you can't
@@ -209,7 +179,6 @@ export const Home = () => {
           </Title>
           <Group gap="xs" style={{ cursor: 'pointer' }}>
             <Text fw={700}>View All</Text>
-            <IconChevronDown size={16} />
           </Group>
         </Group>
 
@@ -233,9 +202,7 @@ export const Home = () => {
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}
-              >
-                <IconCar size={80} color="#adb5bd" />
-              </Box>
+              ></Box>
               <Group justify="space-between" mb="xs">
                 <Box>
                   <Text fw={700}>{car.brand}</Text>
@@ -257,19 +224,16 @@ export const Home = () => {
 
               <Group justify="space-between" mb="md" wrap="nowrap">
                 <Group gap={4} wrap="nowrap">
-                  <IconManualGearbox size={14} color="gray" />
                   <Text size="xs" c="dimmed">
                     Automatic
                   </Text>
                 </Group>
                 <Group gap={4} wrap="nowrap">
-                  <IconUsers size={14} color="gray" />
                   <Text size="xs" c="dimmed">
                     4 Seats
                   </Text>
                 </Group>
                 <Group gap={4} wrap="nowrap">
-                  <IconAirConditioning size={14} color="gray" />
                   <Text size="xs" c="dimmed">
                     Air Conditioned
                   </Text>
@@ -302,24 +266,19 @@ export const Home = () => {
           </Stack>
           <SimpleGrid cols={{ base: 1, sm: 2, md: 4 }} spacing="lg">
             {[
-              { num: '640+', label: 'Cars', icon: <IconCar size={24} /> },
+              { num: '640+', label: 'Cars' },
               {
                 num: '20K+',
                 label: 'Customers',
-                icon: <IconUsers size={24} />,
               },
               {
                 num: '15+',
                 label: 'Years',
-                icon: <IconCalendarEvent size={24} />,
               },
-              { num: '30M+', label: 'Miles', icon: <IconMapPin size={24} /> },
+              { num: '30M+', label: 'Miles' },
             ].map((fact, idx) => (
               <Card key={idx} radius="md" p="md">
                 <Group wrap="nowrap">
-                  <ThemeIcon size={48} radius="md" bg={orangeBtn}>
-                    {fact.icon}
-                  </ThemeIcon>
                   <Box>
                     <Text fw={800} size="xl" lh={1.1}>
                       {fact.num}
@@ -349,13 +308,7 @@ export const Home = () => {
               driving experience is just a tap away.
             </Text>
             <Group>
-              <Button
-                size="xl"
-                bg="black"
-                leftSection={<IconBrandApple size={24} />}
-                radius="md"
-                style={{ flex: 1 }}
-              >
+              <Button size="xl" bg="black" radius="md" style={{ flex: 1 }}>
                 <Stack gap={0} align="flex-start">
                   <Text size="xs" lh={1} fw={400}>
                     Download on the
@@ -365,13 +318,7 @@ export const Home = () => {
                   </Text>
                 </Stack>
               </Button>
-              <Button
-                size="xl"
-                bg="black"
-                leftSection={<IconBrandGooglePlay size={24} />}
-                radius="md"
-                style={{ flex: 1 }}
-              >
+              <Button size="xl" bg="black" radius="md" style={{ flex: 1 }}>
                 <Stack gap={0} align="flex-start">
                   <Text size="xs" lh={1} fw={400}>
                     GET IT ON
@@ -452,9 +399,7 @@ export const Home = () => {
               </Box>
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 5 }}>
-              <Group justify="flex-end">
-                <IconCar size={250} color="rgba(0,0,0,0.2)" stroke={0.5} />
-              </Group>
+              <Group justify="flex-end"></Group>
             </Grid.Col>
           </Grid>
         </Container>

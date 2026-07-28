@@ -9,24 +9,16 @@ import {
   Text,
   Box,
 } from '@mantine/core'
-import {
-  IconCar,
-  IconManualGearbox,
-  IconGasStation,
-  IconSnowflake,
-  IconTruck,
-  IconBus,
-} from '@tabler/icons-react'
 import { useNavigate } from 'react-router'
 import { VEHICLES } from '@/data/cars'
 
 const CATEGORIES = [
-  { label: 'All vehicles', icon: null },
-  { label: 'Sedan', icon: IconCar },
-  { label: 'Cabriolet', icon: IconCar },
-  { label: 'Pickup', icon: IconTruck },
-  { label: 'Suv', icon: IconCar },
-  { label: 'Minivan', icon: IconBus },
+  { label: 'All vehicles' },
+  { label: 'Sedan' },
+  { label: 'Cabriolet' },
+  { label: 'Pickup' },
+  { label: 'Suv' },
+  { label: 'Minivan' },
 ]
 
 export const Catalog = () => {
@@ -53,14 +45,12 @@ export const Catalog = () => {
         <Group gap="sm" justify="center" mb={60}>
           {CATEGORIES.map((category) => {
             const isActive = activeCategory === category.label
-            const Icon = category.icon
             return (
               <Button
                 key={category.label}
                 variant={isActive ? 'filled' : 'light'}
                 radius="xl"
                 size="md"
-                leftSection={Icon ? <Icon size={18} /> : null}
                 onClick={() => setActiveCategory(category.label)}
                 bg={isActive ? redBg : '#f8f9fa'}
                 c={isActive ? 'white' : '#212529'}
@@ -94,9 +84,7 @@ export const Catalog = () => {
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}
-              >
-                <IconCar size={120} color="#dee2e6" stroke={1} />
-              </Box>
+              ></Box>
 
               <Group justify="space-between" align="flex-start" mb="xl">
                 <div>
@@ -119,19 +107,16 @@ export const Catalog = () => {
 
               <Group justify="space-between" mb="xl" wrap="nowrap">
                 <Group gap={6}>
-                  <IconManualGearbox size={20} stroke={1.5} color="#495057" />
                   <Text size="xs" c="dimmed" fw={600}>
                     {vehicle.transmission}
                   </Text>
                 </Group>
                 <Group gap={6}>
-                  <IconGasStation size={20} stroke={1.5} color="#495057" />
                   <Text size="xs" c="dimmed" fw={600}>
                     {vehicle.fuel}
                   </Text>
                 </Group>
                 <Group gap={6}>
-                  <IconSnowflake size={20} stroke={1.5} color="#495057" />
                   <Text size="xs" c="dimmed" fw={600}>
                     {vehicle.ac ? 'Air Conditioner' : 'No AC'}
                   </Text>

@@ -85,11 +85,11 @@ export const Login: React.FC = () => {
 
       <Stack gap={2} mt={8} align="center">
         <Text size="xs" c="dimmed">
-          👑 <b>Admin login:</b> <code>admin@mail.com</code> | Parol:{' '}
+          <b>Admin login:</b> <code>admin@mail.com</code> | Parol:{' '}
           <code>admin123</code>
         </Text>
         <Text size="xs" c="dimmed">
-          👤 <b>User login:</b> <code>john@mail.com</code> | Parol:{' '}
+          <b>User login:</b> <code>john@mail.com</code> | Parol:{' '}
           <code>changeme</code>
         </Text>
       </Stack>

@@ -1,13 +1,4 @@
-import {
-  Badge,
-  Card,
-  Group,
-  Image,
-  Text,
-  ActionIcon,
-  Modal,
-} from '@mantine/core'
-import { IconTrash, IconEdit } from '@tabler/icons-react'
+import { Badge, Card, Group, Image, Text, Button, Modal } from '@mantine/core'
 import { modals } from '@mantine/modals'
 import { notifications } from '@mantine/notifications'
 import { useState } from 'react'
@@ -107,27 +98,27 @@ export const ProductCard = ({ product }: { product: IProduct }) => {
             ${product.price}
           </Badge>
           <Group gap="xs" pos="absolute" top={12} right={12}>
-            <ActionIcon
+            <Button
               color="anor"
               variant="white"
               radius="xl"
-              size="lg"
+              size="xs"
               onClick={() => setEditOpened(true)}
               style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
             >
-              <IconEdit size={18} />
-            </ActionIcon>
-            <ActionIcon
+              Tahrirlash
+            </Button>
+            <Button
               color="red"
               variant="white"
               radius="xl"
-              size="lg"
+              size="xs"
               onClick={openDeleteModal}
               loading={deleteMutation.isPending}
               style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
             >
-              <IconTrash size={18} color="#d90008" />
-            </ActionIcon>
+              O'chirish
+            </Button>
           </Group>
         </Card.Section>
 

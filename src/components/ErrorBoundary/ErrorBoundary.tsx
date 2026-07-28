@@ -8,7 +8,6 @@ import {
   Stack,
   Alert,
 } from '@mantine/core'
-import { IconAlertTriangle, IconRefresh } from '@tabler/icons-react'
 
 interface Props {
   children: ReactNode
@@ -44,12 +43,7 @@ export class ErrorBoundary extends Component<Props, State> {
         <Container size="sm" py={80}>
           <Paper p="xl" radius="md" withBorder shadow="sm">
             <Stack gap="md" align="center" style={{ textAlign: 'center' }}>
-              <Alert
-                icon={<IconAlertTriangle size={32} />}
-                color="red"
-                variant="light"
-                w="100%"
-              >
+              <Alert color="red" variant="light" w="100%">
                 <Title order={3}>Xatolik yuz berdi</Title>
               </Alert>
 
@@ -70,11 +64,7 @@ export class ErrorBoundary extends Component<Props, State> {
                 </Paper>
               )}
 
-              <Button
-                leftSection={<IconRefresh size={18} />}
-                onClick={this.handleReload}
-                color="anor"
-              >
+              <Button onClick={this.handleReload} color="anor">
                 Sahifani qayta yuklash
               </Button>
             </Stack>

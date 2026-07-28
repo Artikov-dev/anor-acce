@@ -6,21 +6,12 @@ import {
   SimpleGrid,
   Box,
   Group,
-  ThemeIcon,
   Stack,
   Card,
   Avatar,
   Accordion,
   Button,
 } from '@mantine/core'
-import {
-  IconPlayerPlayFilled,
-  IconCheck,
-  IconQuote,
-  IconBrandApple,
-  IconBrandGooglePlay,
-} from '@tabler/icons-react'
-
 export const About = () => {
   const redBg = '#990033'
 
@@ -97,16 +88,7 @@ export const About = () => {
             alignItems: 'center',
             justifyContent: 'center',
           }}
-        >
-          <ThemeIcon
-            radius="xl"
-            size={80}
-            bg={redBg}
-            style={{ cursor: 'pointer' }}
-          >
-            <IconPlayerPlayFilled size={32} />
-          </ThemeIcon>
-        </Box>
+        ></Box>
 
         <SimpleGrid cols={{ base: 1, sm: 3 }} mb={100} ta="center">
           <Box>
@@ -153,9 +135,6 @@ export const About = () => {
                 'Maecenas rhoncus, nulla at bibendum elementum, nunc orci.',
               ].map((text, i) => (
                 <Group key={i} align="flex-start" wrap="nowrap" gap="sm">
-                  <ThemeIcon radius="xl" size={24} bg={redBg} mt={2}>
-                    <IconCheck size={14} stroke={3} />
-                  </ThemeIcon>
                   <Text size="sm" c="dimmed">
                     {text}
                   </Text>
@@ -206,12 +185,7 @@ export const About = () => {
                 vehicula. Curabitur vel lorem diam. Duis accumsan elit est.
               </Text>
               <Group>
-                <Button
-                  size="xl"
-                  bg="black"
-                  leftSection={<IconBrandApple size={24} />}
-                  radius="md"
-                >
+                <Button size="xl" bg="black" radius="md">
                   <Stack gap={0} align="flex-start">
                     <Text size="xs" lh={1} fw={400}>
                       Download on the
@@ -221,12 +195,7 @@ export const About = () => {
                     </Text>
                   </Stack>
                 </Button>
-                <Button
-                  size="xl"
-                  bg="black"
-                  leftSection={<IconBrandGooglePlay size={24} />}
-                  radius="md"
-                >
+                <Button size="xl" bg="black" radius="md">
                   <Stack gap={0} align="flex-start">
                     <Text size="xs" lh={1} fw={400}>
                       GET IT ON
@@ -274,15 +243,6 @@ export const About = () => {
               }}
             >
               <Box p={40} bg="#fafafa" style={{ flex: 1 }}>
-                <ThemeIcon
-                  size={40}
-                  radius="xl"
-                  variant="light"
-                  color="indigo"
-                  mb="xl"
-                >
-                  <IconQuote size={20} />
-                </ThemeIcon>
                 <Text fw={500} ta="center" c="dimmed">
                   "{review.text}"
                 </Text>

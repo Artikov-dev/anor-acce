@@ -3,7 +3,6 @@ import {
   Group,
   Text,
   Container,
-  ThemeIcon,
   Stack,
   Grid,
   Title,
@@ -13,15 +12,6 @@ import {
   Avatar,
 } from '@mantine/core'
 import { Outlet, Link, useLocation } from 'react-router'
-import {
-  IconCar,
-  IconPhoneFilled,
-  IconMapPin,
-  IconMail,
-  IconBrandApple,
-  IconBrandGooglePlay,
-  IconLogout,
-} from '@tabler/icons-react'
 import { useAuthStore } from '@/store/useAuthStore'
 import { useProfileQuery, useLogout } from '@/hooks/useAuthQueries'
 
@@ -40,7 +30,6 @@ export const Layout = () => {
           <Group h="100%" px="md" justify="space-between">
             <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
               <Group gap="xs">
-                <IconCar size={32} />
                 <Text fw={700} size="xl">
                   Anor shop
                 </Text>
@@ -92,9 +81,6 @@ export const Layout = () => {
 
             <Group gap="md">
               <Group gap="sm">
-                <ThemeIcon radius="xl" size="xl" color="#ff0000ff">
-                  <IconPhoneFilled size={20} />
-                </ThemeIcon>
                 <Stack gap={0}>
                   <Text size="sm" c="dimmed" lh={1.2}>
                     Need help?
@@ -128,7 +114,6 @@ export const Layout = () => {
                     color="red"
                     radius="md"
                     size="xs"
-                    leftSection={<IconLogout size={16} />}
                     onClick={logout}
                   >
                     Chiqish
@@ -168,7 +153,6 @@ export const Layout = () => {
           <Grid>
             <Grid.Col span={{ base: 12, md: 3 }}>
               <Group gap="xs" mb="md">
-                <IconCar size={32} />
                 <Text fw={700} size="xl">
                   Car Rental
                 </Text>
@@ -177,17 +161,6 @@ export const Layout = () => {
                 Pellentesque habitant morbi tristique senectus et netus et
                 malesuada fames ac turpis egestas.
               </Text>
-              <Group gap="sm">
-                <ThemeIcon radius="xl" color="gray" variant="light">
-                  <IconPhoneFilled size={16} />
-                </ThemeIcon>
-                <ThemeIcon radius="xl" color="gray" variant="light">
-                  <IconPhoneFilled size={16} />
-                </ThemeIcon>
-                <ThemeIcon radius="xl" color="gray" variant="light">
-                  <IconPhoneFilled size={16} />
-                </ThemeIcon>
-              </Group>
             </Grid.Col>
 
             <Grid.Col span={{ base: 12, md: 2 }}>
@@ -281,9 +254,6 @@ export const Layout = () => {
             <Grid.Col span={{ base: 12, md: 3 }}>
               <Stack gap="md">
                 <Group wrap="nowrap">
-                  <ThemeIcon radius="xl" color="orange" variant="light">
-                    <IconMapPin size={16} />
-                  </ThemeIcon>
                   <Box>
                     <Text size="xs" c="dimmed">
                       Address
@@ -294,9 +264,6 @@ export const Layout = () => {
                   </Box>
                 </Group>
                 <Group wrap="nowrap">
-                  <ThemeIcon radius="xl" color="orange" variant="light">
-                    <IconMail size={16} />
-                  </ThemeIcon>
                   <Box>
                     <Text size="xs" c="dimmed">
                       Email
@@ -307,9 +274,6 @@ export const Layout = () => {
                   </Box>
                 </Group>
                 <Group wrap="nowrap">
-                  <ThemeIcon radius="xl" color="red" variant="light">
-                    <IconPhoneFilled size={16} />
-                  </ThemeIcon>
                   <Box>
                     <Text size="xs" c="dimmed">
                       Phone
@@ -330,7 +294,6 @@ export const Layout = () => {
                 <Button
                   size="md"
                   bg="black"
-                  leftSection={<IconBrandApple size={20} />}
                   radius="md"
                   style={{ justifyContent: 'flex-start' }}
                 >
@@ -346,7 +309,6 @@ export const Layout = () => {
                 <Button
                   size="md"
                   bg="black"
-                  leftSection={<IconBrandGooglePlay size={20} />}
                   radius="md"
                   style={{ justifyContent: 'flex-start' }}
                 >
