@@ -18,6 +18,7 @@ import {
   useUpdateProductMutation,
 } from '@/hooks/useProducts'
 import { notifications } from '@mantine/notifications'
+import { cleanImageUrl } from '@/utils/cleanImageUrl'
 
 interface ProductModalProps {
   opened: boolean
@@ -64,7 +65,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
         price: productToEdit.price,
         description: productToEdit.description || '',
         categoryId: String(productToEdit.category?.id || ''),
-        image: productToEdit.images?.[0] || '',
+        image: cleanImageUrl(productToEdit.images?.[0]),
       })
     } else {
       form.reset()
@@ -189,7 +190,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
           {form.values.image && (
             <Group justify="center" mt="xs">
               <Image
-                src={form.values.image}
+                src={cleanImageUrl(form.values.image)}
                 alt="Превью"
                 h={120}
                 w="auto"

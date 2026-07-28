@@ -14,6 +14,7 @@ import {
 } from '@mantine/core'
 import { useProfileQuery, useLogout } from '@/hooks/useAuthQueries'
 import { useAuthStore } from '@/store/useAuthStore'
+import { cleanImageUrl } from '@/utils/cleanImageUrl'
 
 export const DashboardLayout: React.FC = () => {
   const navigate = useNavigate()
@@ -72,7 +73,7 @@ export const DashboardLayout: React.FC = () => {
             ) : (
               <Group gap="xs">
                 <Avatar
-                  src={currentUser?.avatar}
+                  src={cleanImageUrl(currentUser?.avatar)}
                   alt={currentUser?.name || 'User'}
                   radius="xl"
                   size="sm"

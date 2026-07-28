@@ -7,6 +7,7 @@ import {
   useUpdateCategoryMutation,
 } from '@/hooks/useCategories'
 import { notifications } from '@mantine/notifications'
+import { cleanImageUrl } from '@/utils/cleanImageUrl'
 
 interface CategoryModalProps {
   opened: boolean
@@ -41,7 +42,7 @@ export const CategoryModal: React.FC<CategoryModalProps> = ({
     if (categoryToEdit) {
       form.setValues({
         name: categoryToEdit.name,
-        image: categoryToEdit.image,
+        image: cleanImageUrl(categoryToEdit.image),
       })
     } else {
       form.reset()
@@ -124,7 +125,7 @@ export const CategoryModal: React.FC<CategoryModalProps> = ({
           {form.values.image && (
             <Group justify="center" mt="xs">
               <Image
-                src={form.values.image}
+                src={cleanImageUrl(form.values.image)}
                 alt="Превью"
                 h={100}
                 w="auto"

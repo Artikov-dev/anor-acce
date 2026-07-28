@@ -1,5 +1,5 @@
 import React from 'react'
-import { useNavigate } from 'react-router'
+import { useNavigate, Link } from 'react-router'
 import {
   TextInput,
   PasswordInput,
@@ -10,6 +10,7 @@ import {
   Stack,
   Text,
   Alert,
+  Anchor,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { notifications } from '@mantine/notifications'
@@ -20,17 +21,22 @@ export const Login: React.FC = () => {
   const navigate = useNavigate()
   const loginMutation = useLoginMutation()
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated)
+  const user = useAuthStore((state) => state.user)
 
   React.useEffect(() => {
     if (isAuthenticated) {
-      navigate('/dashboard', { replace: true })
+      if (user?.role === 'admin') {
+        navigate('/dashboard', { replace: true })
+      } else {
+        navigate('/catalog', { replace: true })
+      }
     }
-  }, [isAuthenticated, navigate])
+  }, [isAuthenticated, user, navigate])
 
   const form = useForm({
     initialValues: {
-      email: 'john@mail.com',
-      password: 'changeme',
+      email: 'admin@mail.com',
+      password: 'admin123',
     },
 
     validate: {
@@ -42,18 +48,22 @@ export const Login: React.FC = () => {
 
   const handleSubmit = form.onSubmit((values) => {
     loginMutation.mutate(values, {
-      onSuccess: () => {
+      onSuccess: (data) => {
         notifications.show({
-          title: 'Успешно!',
-          message: 'Вы успешно вошли в систему',
+          title: 'Muvaffaqiyatli!',
+          message: 'Tizimga kirdingiz',
           color: 'green',
         })
-        navigate('/dashboard', { replace: true })
+        if (data.profile?.role === 'admin') {
+          navigate('/dashboard', { replace: true })
+        } else {
+          navigate('/catalog', { replace: true })
+        }
       },
       onError: (err) => {
         notifications.show({
-          title: 'Ошибка авторизации',
-          message: err?.response?.data?.message || 'Неверный email или пароль',
+          title: 'Xatolik',
+          message: err?.response?.data?.message || 'Email yoki parol xato',
           color: 'red',
         })
       },
@@ -63,12 +73,26 @@ export const Login: React.FC = () => {
   return (
     <Container size={420} my={60}>
       <Title ta="center" fw={900}>
-        Вход в админ-панель
+        Tizimga kirish (Login)
       </Title>
 
       <Text c="dimmed" size="sm" ta="center" mt={5}>
-        Тестовые данные: <b>john@mail.com</b> / <b>changeme</b>
+        Hisobingiz yo'qmi?{' '}
+        <Anchor size="sm" component={Link} to="/register">
+          Ro'yxatdan o'tish
+        </Anchor>
       </Text>
+
+      <Stack gap={2} mt={8} align="center">
+        <Text size="xs" c="dimmed">
+          👑 <b>Admin login:</b> <code>admin@mail.com</code> | Parol:{' '}
+          <code>admin123</code>
+        </Text>
+        <Text size="xs" c="dimmed">
+          👤 <b>User login:</b> <code>john@mail.com</code> | Parol:{' '}
+          <code>changeme</code>
+        </Text>
+      </Stack>
 
       <Paper withBorder shadow="md" p={30} mt={30} radius="md">
         <form onSubmit={handleSubmit}>

@@ -19,6 +19,7 @@ import {
 import { CategoryModal } from '@/components/CategoryModal/CategoryModal'
 import type { ICategory } from '@/types/category'
 import { notifications } from '@mantine/notifications'
+import { cleanImageUrl } from '@/utils/cleanImageUrl'
 
 export const DashboardCategories: React.FC = () => {
   const { data: categories, isLoading, isError, refetch } = useCategoriesQuery()
@@ -143,7 +144,7 @@ export const DashboardCategories: React.FC = () => {
                   <Table.Tr key={cat.id}>
                     <Table.Td>
                       <Image
-                        src={cat.image}
+                        src={cleanImageUrl(cat.image)}
                         alt={cat.name}
                         h={40}
                         w={40}

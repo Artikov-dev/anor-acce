@@ -37,14 +37,18 @@ export const Register: React.FC = () => {
           loginMutation.mutate(
             { email, password },
             {
-              onSuccess: () => {
+              onSuccess: (data) => {
                 notifications.show({
                   title: 'Xush kelibsiz!',
                   message:
                     "Muvaffaqiyatli ro'yxatdan o'tdingiz va tizimga kirdingiz!",
                   color: 'green',
                 })
-                navigate('/dashboard', { replace: true })
+                if (data.profile?.role === 'admin') {
+                  navigate('/dashboard', { replace: true })
+                } else {
+                  navigate('/catalog', { replace: true })
+                }
               },
               onError: () => {
                 navigate('/login', { replace: true })

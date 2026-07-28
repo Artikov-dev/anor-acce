@@ -27,6 +27,7 @@ import { useCategoriesQuery } from '@/hooks/useCategories'
 import { ProductModal } from '@/components/ProductModal/ProductModal'
 import type { IProduct } from '@/types/product'
 import { notifications } from '@mantine/notifications'
+import { cleanImageUrl } from '@/utils/cleanImageUrl'
 
 const PAGE_SIZE = 10
 
@@ -281,7 +282,7 @@ export const DashboardProducts: React.FC = () => {
                     >
                       <Table.Td>
                         <Image
-                          src={product.images?.[0]}
+                          src={cleanImageUrl(product.images?.[0])}
                           alt={product.title}
                           h={45}
                           w={45}
