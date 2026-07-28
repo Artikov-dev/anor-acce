@@ -82,12 +82,17 @@ export const ProductModal: React.FC<ProductModalProps> = ({
   }))
 
   const handleSubmit = form.onSubmit((values) => {
+    const selectedCategory = categories.find(
+      (c) => String(c.id) === String(values.categoryId)
+    )
+
     const payload = {
       title: values.title,
       price: Number(values.price),
       description: values.description,
       categoryId: Number(values.categoryId),
       images: [values.image],
+      category: selectedCategory,
     }
 
     if (isEditing && productToEdit) {

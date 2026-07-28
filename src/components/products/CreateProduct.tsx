@@ -51,12 +51,17 @@ export const CreateProduct = ({
 
   const handleSubmit = (values: typeof form.values) => {
     setLoading(true)
+    const selectedCategory = categories.find(
+      (c: ICategory) => String(c.id) === String(values.categoryId)
+    )
+
     const payload = {
       title: values.title,
       price: values.price,
       description: values.description,
       categoryId: Number(values.categoryId),
       images: [values.images],
+      category: selectedCategory,
     }
 
     const handleSuccess = () => {
