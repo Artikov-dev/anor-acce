@@ -20,6 +20,7 @@ export const DashboardLayout: React.FC = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const logout = useLogout()
+  const token = useAuthStore((state) => state.token)
   const storedUser = useAuthStore((state) => state.user)
   const { data: profile, isLoading } = useProfileQuery()
 
@@ -65,33 +66,52 @@ export const DashboardLayout: React.FC = () => {
           </Group>
 
           <Group gap="md">
-            {isLoading ? (
-              <Group gap="xs">
-                <Skeleton height={36} circle />
-                <Skeleton height={20} width={100} />
-              </Group>
+            {token ? (
+              <>
+                {isLoading ? (
+                  <Group gap="xs">
+                    <Skeleton height={36} circle />
+                    <Skeleton height={20} width={100} />
+                  </Group>
+                ) : (
+                  <Group gap="xs">
+                    <Avatar
+                      src={cleanImageUrl(currentUser?.avatar)}
+                      alt={currentUser?.name || 'User'}
+                      radius="xl"
+                      size="sm"
+                    />
+                    <Text size="sm" fw={500}>
+                      {currentUser?.name ||
+                        currentUser?.email ||
+                        'Администратор'}
+                    </Text>
+                  </Group>
+                )}
+
+                <Button
+                  variant="light"
+                  color="red"
+                  size="xs"
+                  onClick={handleLogout}
+                >
+                  Выйти
+                </Button>
+              </>
             ) : (
               <Group gap="xs">
-                <Avatar
-                  src={cleanImageUrl(currentUser?.avatar)}
-                  alt={currentUser?.name || 'User'}
-                  radius="xl"
-                  size="sm"
-                />
-                <Text size="sm" fw={500}>
-                  {currentUser?.name || currentUser?.email || 'Администратор'}
-                </Text>
+                <Button
+                  variant="outline"
+                  size="xs"
+                  onClick={() => navigate('/login')}
+                >
+                  Kirish
+                </Button>
+                <Button size="xs" onClick={() => navigate('/register')}>
+                  Ro'yxatdan o'tish
+                </Button>
               </Group>
             )}
-
-            <Button
-              variant="light"
-              color="red"
-              size="xs"
-              onClick={handleLogout}
-            >
-              Выйти
-            </Button>
           </Group>
         </Group>
       </AppShell.Header>

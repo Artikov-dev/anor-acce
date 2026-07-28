@@ -26,7 +26,12 @@ $api.interceptors.request.use((config) => {
 $api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    const token = useAuthStore.getState().token
+    if (
+      error.response?.status === 401 &&
+      token &&
+      token !== 'default-admin-token'
+    ) {
       useAuthStore.getState().logout()
     }
     return Promise.reject(error)

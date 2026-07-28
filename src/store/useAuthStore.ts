@@ -14,22 +14,12 @@ interface AuthState {
   setIsLoading: (loading: boolean) => void
 }
 
-const DEFAULT_USER: UserProfile = {
-  id: 1,
-  email: 'admin@mail.com',
-  name: 'Admin',
-  role: 'admin',
-  avatar: 'https://placehold.co/150x150?text=Admin',
-}
-
-const DEFAULT_TOKEN = 'default-admin-token'
-
 export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
-      user: DEFAULT_USER,
-      token: DEFAULT_TOKEN,
-      isAuthenticated: true,
+      user: null,
+      token: null,
+      isAuthenticated: false,
       isLoading: false,
 
       setAuth: (token: string, user: UserProfile) => {

@@ -15,23 +15,9 @@ import {
 import { useForm } from '@mantine/form'
 import { notifications } from '@mantine/notifications'
 import { useLoginMutation } from '@/hooks/useAuthQueries'
-import { useAuthStore } from '@/store/useAuthStore'
-
 export const Login: React.FC = () => {
   const navigate = useNavigate()
   const loginMutation = useLoginMutation()
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated)
-  const user = useAuthStore((state) => state.user)
-
-  React.useEffect(() => {
-    if (isAuthenticated) {
-      if (user?.role === 'admin') {
-        navigate('/dashboard', { replace: true })
-      } else {
-        navigate('/catalog', { replace: true })
-      }
-    }
-  }, [isAuthenticated, user, navigate])
 
   const form = useForm({
     initialValues: {
