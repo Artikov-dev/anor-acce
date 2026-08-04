@@ -1,0 +1,386 @@
+import React, { useState, useMemo, useEffect } from 'react'
+import { useSearchParams } from 'react-router'
+import { useDebouncedValue } from '@mantine/hooks'
+import {
+  Title,
+  Button,
+  Table,
+  Group,
+  Image,
+  Text,
+  Paper,
+  Stack,
+  Skeleton,
+  Alert,
+  TextInput,
+  Select,
+  Pagination,
+  Modal,
+  Badge,
+} from '@mantine/core'
+import {
+  useProductsQuery,
+  useDeleteProductMutation,
+  usePrefetchProduct,
+  type IProduct,
+} from '@/entities/product'
+import { useCategoriesQuery } from '@/entities/category'
+import { ProductModal } from '@/features/manage-product'
+import { notifications } from '@mantine/notifications'
+import { cleanImageUrl } from '@/shared/lib/utils/cleanImageUrl'
+
+const PAGE_SIZE = 10
+
+export const DashboardProducts: React.FC = () => {
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  const search = searchParams.get('search') || ''
+  const categoryIdParam = searchParams.get('category') || ''
+  const pageParam = parseInt(searchParams.get('page') || '1', 10)
+  const sortByParam =
+    (searchParams.get('sortBy') as 'price_asc' | 'price_desc' | 'default') ||
+    'default'
+
+  const [searchInput, setSearchInput] = useState(search)
+  const [debouncedSearch] = useDebouncedValue(searchInput, 400)
+
+  const { data: categories = [] } = useCategoriesQuery()
+
+  const updateUrlParams = (newParams: Record<string, string | null>) => {
+    const updated = new URLSearchParams(searchParams)
+    Object.entries(newParams).forEach(([key, val]) => {
+      if (val === null || val === '' || val === 'default') {
+        updated.delete(key)
+      } else {
+        updated.set(key, val)
+      }
+    })
+    setSearchParams(updated)
+  }
+
+  useEffect(() => {
+    if (debouncedSearch !== search) {
+      updateUrlParams({ search: debouncedSearch, page: '1' })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedSearch])
+
+  const queryParams = useMemo(() => {
+    return {
+      title: search || undefined,
+      categoryId: categoryIdParam ? Number(categoryIdParam) : undefined,
+      offset: (pageParam - 1) * PAGE_SIZE,
+      limit: PAGE_SIZE,
+      sortBy: sortByParam,
+    }
+  }, [search, categoryIdParam, pageParam, sortByParam])
+
+  const {
+    data: products = [],
+    isLoading,
+    isError,
+    refetch,
+  } = useProductsQuery(queryParams)
+
+  const prefetchProduct = usePrefetchProduct()
+  const deleteMutation = useDeleteProductMutation()
+
+  const [productModalOpened, setProductModalOpened] = useState(false)
+  const [editingProduct, setEditingProduct] = useState<IProduct | null>(null)
+
+  const [deleteModalOpened, setDeleteModalOpened] = useState(false)
+  const [deletingProduct, setDeletingProduct] = useState<IProduct | null>(null)
+
+  const handleSearchChange = (val: string) => {
+    setSearchInput(val)
+  }
+
+  const handleCategoryChange = (val: string | null) => {
+    updateUrlParams({ category: val, page: '1' })
+  }
+
+  const handleSortChange = (val: string | null) => {
+    updateUrlParams({ sortBy: val, page: '1' })
+  }
+
+  const handlePageChange = (page: number) => {
+    updateUrlParams({ page: String(page) })
+  }
+
+  const handleClearFilters = () => {
+    setSearchInput('')
+    setSearchParams(new URLSearchParams())
+  }
+
+  const handleOpenCreate = () => {
+    setEditingProduct(null)
+    setProductModalOpened(true)
+  }
+
+  const handleOpenEdit = (product: IProduct) => {
+    setEditingProduct(product)
+    setProductModalOpened(true)
+  }
+
+  const handleOpenDelete = (product: IProduct) => {
+    setDeletingProduct(product)
+    setDeleteModalOpened(true)
+  }
+
+  const handleConfirmDelete = () => {
+    if (!deletingProduct) return
+    const prodToDelete = deletingProduct
+    setDeleteModalOpened(false)
+    setDeletingProduct(null)
+
+    deleteMutation.mutate(prodToDelete.id, {
+      onSuccess: () => {
+        notifications.show({
+          title: 'Удалено',
+          message: `Товар "${prodToDelete.title}" успешно удален`,
+          color: 'green',
+        })
+      },
+      onError: (err) => {
+        notifications.show({
+          title: 'Ошибка отката',
+          message:
+            err?.response?.data?.message ||
+            'Не удалось удалить товар. Изменения отменены.',
+          color: 'red',
+        })
+      },
+    })
+  }
+
+  const categoryOptions = [
+    { value: '', label: 'Все категории' },
+    ...categories.map((c) => ({ value: String(c.id), label: c.name })),
+  ]
+
+  const sortOptions = [
+    { value: 'default', label: 'По умолчанию' },
+    { value: 'price_asc', label: 'Сначала дешевые ($ ↑)' },
+    { value: 'price_desc', label: 'Сначала дорогие ($ ↓)' },
+  ]
+
+  return (
+    <Stack gap="md">
+      <Group justify="space-between" align="center">
+        <div>
+          <Title order={2}>Товары</Title>
+          <Text c="dimmed" size="sm">
+            Управление каталогом товаров магазина
+          </Text>
+        </div>
+        <Button onClick={handleOpenCreate}>Добавить товар</Button>
+      </Group>
+
+      <Paper p="sm" withBorder radius="md">
+        <Group grow align="flex-end">
+          <TextInput
+            label="Поиск по названию"
+            placeholder="Введите название..."
+            value={searchInput}
+            onChange={(e) => handleSearchChange(e.currentTarget.value)}
+          />
+
+          <Select
+            label="Фильтр по категории"
+            placeholder="Выберите категорию"
+            data={categoryOptions}
+            value={categoryIdParam}
+            onChange={handleCategoryChange}
+            clearable
+          />
+
+          <Select
+            label="Сортировка по цене"
+            placeholder="По умолчанию"
+            data={sortOptions}
+            value={sortByParam}
+            onChange={handleSortChange}
+          />
+
+          {(search || categoryIdParam || sortByParam !== 'default') && (
+            <Button variant="light" color="gray" onClick={handleClearFilters}>
+              Сбросить
+            </Button>
+          )}
+        </Group>
+      </Paper>
+
+      {isLoading && (
+        <Paper p="md" withBorder radius="md">
+          <Stack gap="sm">
+            <Skeleton height={45} />
+            <Skeleton height={45} />
+            <Skeleton height={45} />
+            <Skeleton height={45} />
+            <Skeleton height={45} />
+          </Stack>
+        </Paper>
+      )}
+
+      {isError && (
+        <Alert title="Ошибка загрузки данных" color="red" variant="filled">
+          <Group justify="space-between" align="center">
+            <Text size="sm">
+              Не удалось загрузить список товаров. Проверьте соединение.
+            </Text>
+            <Button
+              variant="white"
+              color="red"
+              size="xs"
+              onClick={() => refetch()}
+            >
+              Повторить
+            </Button>
+          </Group>
+        </Alert>
+      )}
+
+      {!isLoading &&
+        !isError &&
+        (products.length === 0 ? (
+          <Paper p="xl" withBorder style={{ textAlign: 'center' }} radius="md">
+            <Stack align="center" gap="xs">
+              <Text fw={500} size="lg">
+                Товары не найдены
+              </Text>
+              <Text c="dimmed" size="sm">
+                Попробуйте изменить параметры поиска или добавьте новый товар.
+              </Text>
+              <Group mt="sm">
+                <Button variant="default" onClick={handleClearFilters}>
+                  Сбросить фильтры
+                </Button>
+                <Button onClick={handleOpenCreate}>Создать товар</Button>
+              </Group>
+            </Stack>
+          </Paper>
+        ) : (
+          <>
+            <Paper withBorder radius="md">
+              <Table highlightOnHover align="left">
+                <Table.Thead>
+                  <Table.Tr>
+                    <Table.Th style={{ width: 70 }}>Фото</Table.Th>
+                    <Table.Th>Название</Table.Th>
+                    <Table.Th>Категория</Table.Th>
+                    <Table.Th style={{ width: 110 }}>Цена</Table.Th>
+                    <Table.Th style={{ width: 180, textAlign: 'right' }}>
+                      Действия
+                    </Table.Th>
+                  </Table.Tr>
+                </Table.Thead>
+                <Table.Tbody>
+                  {products.map((product) => (
+                    <Table.Tr
+                      key={product.id}
+                      onMouseEnter={() => prefetchProduct(product.id)}
+                    >
+                      <Table.Td>
+                        <Image
+                          src={cleanImageUrl(product.images?.[0])}
+                          alt={product.title}
+                          h={45}
+                          w={45}
+                          radius="md"
+                          fallbackSrc="https://placehold.co/45x45?text=No+Img"
+                        />
+                      </Table.Td>
+                      <Table.Td fw={500}>
+                        <Text size="sm" lineClamp={2}>
+                          {product.title}
+                        </Text>
+                      </Table.Td>
+                      <Table.Td>
+                        <Badge variant="light" color="blue">
+                          {product.category?.name || 'Без категории'}
+                        </Badge>
+                      </Table.Td>
+                      <Table.Td fw={700} c="green.7">
+                        ${product.price}
+                      </Table.Td>
+                      <Table.Td>
+                        <Group gap="xs" justify="flex-end">
+                          <Button
+                            size="xs"
+                            variant="light"
+                            color="blue"
+                            onClick={() => handleOpenEdit(product)}
+                          >
+                            Изменить
+                          </Button>
+                          <Button
+                            size="xs"
+                            variant="light"
+                            color="red"
+                            onClick={() => handleOpenDelete(product)}
+                            loading={
+                              deleteMutation.isPending &&
+                              deletingProduct?.id === product.id
+                            }
+                          >
+                            Удалить
+                          </Button>
+                        </Group>
+                      </Table.Td>
+                    </Table.Tr>
+                  ))}
+                </Table.Tbody>
+              </Table>
+            </Paper>
+
+            <Group justify="space-between" align="center" mt="sm">
+              <Text size="sm" c="dimmed">
+                Показано товаров: {products.length}
+              </Text>
+              <Pagination
+                total={
+                  products.length < PAGE_SIZE && pageParam === 1
+                    ? 1
+                    : pageParam + (products.length === PAGE_SIZE ? 1 : 0)
+                }
+                value={pageParam}
+                onChange={handlePageChange}
+              />
+            </Group>
+          </>
+        ))}
+
+      <ProductModal
+        opened={productModalOpened}
+        onClose={() => setProductModalOpened(false)}
+        productToEdit={editingProduct}
+      />
+
+      <Modal
+        opened={deleteModalOpened}
+        onClose={() => setDeleteModalOpened(false)}
+        title="Подтверждение удаления"
+        centered
+      >
+        <Stack>
+          <Text size="sm">
+            Вы уверены, что хотите удалить товар{' '}
+            <b>"{deletingProduct?.title}"</b>? Это действие мгновенно скроет
+            товар из списка.
+          </Text>
+          <Group justify="flex-end" mt="md">
+            <Button
+              variant="default"
+              onClick={() => setDeleteModalOpened(false)}
+            >
+              Отмена
+            </Button>
+            <Button color="red" onClick={handleConfirmDelete}>
+              Удалить
+            </Button>
+          </Group>
+        </Stack>
+      </Modal>
+    </Stack>
+  )
+}
