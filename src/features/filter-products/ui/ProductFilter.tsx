@@ -2,7 +2,7 @@ import { Button, Group, TextInput, NumberInput } from '@mantine/core'
 import { useDebouncedValue } from '@mantine/hooks'
 import { useEffect, useState } from 'react'
 import { useCategories, type ICategory } from '@/entities/category'
-import { useSearchRequestParams } from '@/shared/lib/hooks/useSearchRequestParams'
+import { useSearchRequestParams } from '@/shared'
 import type { TProductParams } from '@/entities/product'
 
 export const ProductFilter = () => {
