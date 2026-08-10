@@ -27,9 +27,12 @@ export const Login: React.FC = () => {
     },
 
     validate: {
-      email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Некорректный email'),
+      email: (value) =>
+        /^\S+@\S+$/.test(value) ? null : "Noto'g'ri email formati",
       password: (value) =>
-        value.length >= 4 ? null : 'Пароль должен содержать минимум 4 символа',
+        value.length >= 4
+          ? null
+          : "Parol kamida 4 ta belgidan iborat bo'lishi kerak",
     },
   })
 
@@ -38,7 +41,7 @@ export const Login: React.FC = () => {
       onSuccess: (data) => {
         notifications.show({
           title: 'Muvaffaqiyatli!',
-          message: 'Tizimga kirdingiz',
+          message: 'Tizimga muvaffaqiyatli kirdingiz',
           color: 'green',
         })
         if (data.profile?.role === 'admin') {
@@ -50,7 +53,7 @@ export const Login: React.FC = () => {
       onError: (err) => {
         notifications.show({
           title: 'Xatolik',
-          message: err?.response?.data?.message || 'Email yoki parol xato',
+          message: err?.response?.data?.message || "Email yoki parol noto'g'ri",
           color: 'red',
         })
       },
@@ -60,7 +63,7 @@ export const Login: React.FC = () => {
   return (
     <Container size={420} my={60}>
       <Title ta="center" fw={900}>
-        Tizimga kirish (Login)
+        Tizimga kirish
       </Title>
 
       <Text c="dimmed" size="sm" ta="center" mt={5}>
@@ -76,7 +79,7 @@ export const Login: React.FC = () => {
           <code>admin123</code>
         </Text>
         <Text size="xs" c="dimmed">
-          <b>User login:</b> <code>john@mail.com</code> | Parol:{' '}
+          <b>Foydalanuvchi:</b> <code>john@mail.com</code> | Parol:{' '}
           <code>changeme</code>
         </Text>
       </Stack>
@@ -85,20 +88,20 @@ export const Login: React.FC = () => {
         <form onSubmit={handleSubmit}>
           <Stack>
             {loginMutation.isError && (
-              <Alert title="Ошибка" color="red" variant="filled">
-                Неверный email или пароль. Попробуйте еще раз.
+              <Alert title="Xatolik" color="red" variant="filled">
+                Email yoki parol noto'g'ri. Qaytadan urinib ko'ring.
               </Alert>
             )}
 
             <TextInput
-              label="Email"
+              label="Email pochta"
               placeholder="john@mail.com"
               required
               {...form.getInputProps('email')}
             />
 
             <PasswordInput
-              label="Пароль"
+              label="Parol"
               placeholder="••••••••"
               required
               {...form.getInputProps('password')}
@@ -107,10 +110,11 @@ export const Login: React.FC = () => {
             <Button
               type="submit"
               fullWidth
+              color="red"
               mt="xl"
               loading={loginMutation.isPending}
             >
-              Войти
+              Kirish
             </Button>
           </Stack>
         </form>

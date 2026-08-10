@@ -114,6 +114,7 @@ export const Register: React.FC = () => {
             <Button
               type="submit"
               fullWidth
+              color="red"
               mt="xl"
               loading={registerMutation.isPending}
             >

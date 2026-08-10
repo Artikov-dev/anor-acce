@@ -12,6 +12,7 @@ import {
   Box,
   Skeleton,
 } from '@mantine/core'
+import { IconArrowLeft } from '@tabler/icons-react'
 import { useProfileQuery, useLogout, useAuthStore } from '@/entities/user'
 import { cleanImageUrl } from '@/shared/lib/utils/cleanImageUrl'
 
@@ -32,16 +33,16 @@ export const DashboardLayout: React.FC = () => {
 
   const navItems = [
     {
-      label: 'Главная',
+      label: 'Bosh sahifa',
       path: '/dashboard',
       exact: true,
     },
     {
-      label: 'Товары',
+      label: 'Mahsulotlar',
       path: '/dashboard/products',
     },
     {
-      label: 'Категории',
+      label: 'Kategoriyalar',
       path: '/dashboard/categories',
     },
   ]
@@ -54,14 +55,24 @@ export const DashboardLayout: React.FC = () => {
     >
       <AppShell.Header p="xs">
         <Group justify="space-between" h="100%" px="md">
-          <Group gap="xs">
+          <Group gap="md">
             <Title
               order={3}
               style={{ cursor: 'pointer' }}
               onClick={() => navigate('/dashboard')}
+              c="red.7"
             >
-              Admin Panel
+              Anor Admin Panel
             </Title>
+            <Button
+              variant="subtle"
+              color="gray"
+              size="xs"
+              onClick={() => navigate('/')}
+              leftSection={<IconArrowLeft size={16} />}
+            >
+              Saytga o'tish
+            </Button>
           </Group>
 
           <Group gap="md">
@@ -83,7 +94,7 @@ export const DashboardLayout: React.FC = () => {
                     <Text size="sm" fw={500}>
                       {currentUser?.name ||
                         currentUser?.email ||
-                        'Администратор'}
+                        'Administrator'}
                     </Text>
                   </Group>
                 )}
@@ -94,7 +105,7 @@ export const DashboardLayout: React.FC = () => {
                   size="xs"
                   onClick={handleLogout}
                 >
-                  Выйти
+                  Chiqish
                 </Button>
               </>
             ) : (
@@ -106,7 +117,11 @@ export const DashboardLayout: React.FC = () => {
                 >
                   Kirish
                 </Button>
-                <Button size="xs" onClick={() => navigate('/register')}>
+                <Button
+                  size="xs"
+                  color="red"
+                  onClick={() => navigate('/register')}
+                >
                   Ro'yxatdan o'tish
                 </Button>
               </Group>
@@ -118,7 +133,7 @@ export const DashboardLayout: React.FC = () => {
       <AppShell.Navbar p="md">
         <Stack gap="xs">
           <Text size="xs" fw={700} c="dimmed" tt="uppercase" px="xs" mb={4}>
-            Навигация
+            Navigatsiya
           </Text>
           {navItems.map((item) => {
             const isActive = item.exact
@@ -132,6 +147,7 @@ export const DashboardLayout: React.FC = () => {
                 active={isActive}
                 onClick={() => navigate(item.path)}
                 style={{ borderRadius: 8 }}
+                color="red"
               />
             )
           })}

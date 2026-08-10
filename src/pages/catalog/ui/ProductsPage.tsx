@@ -49,35 +49,48 @@ export function ProductsPage() {
       <Modal
         opened={opened}
         onClose={() => setOpened(false)}
-        title="Yangi mahsulot"
+        title="Yangi mahsulot qo'shish"
       >
         <CreateProduct onSuccessCallback={() => setOpened(false)} />
       </Modal>
 
-      <Stack gap={40} align="stretch">
-        <Group justify="space-between">
-          <Title order={2}>Каталог</Title>
+      <Stack gap={30} align="stretch">
+        <Group justify="space-between" align="center">
+          <Box>
+            <Title order={1} size={32} fw={900}>
+              Avtomobillar va Mahsulotlar Katalogi
+            </Title>
+            <Text c="dimmed" size="sm">
+              O'zingizga mos bo'lgan eng yaxshi avtomobillarni tanlang va
+              ijaraga oling
+            </Text>
+          </Box>
           {isAdmin && (
-            <Button onClick={() => setOpened(true)} color="red">
-              + Mahsulot qo'shish
+            <Button onClick={() => setOpened(true)} color="red" radius="md">
+              + Yangi mahsulot
             </Button>
           )}
         </Group>
 
         <ProductFilter />
 
-        <Box>
+        <Box mih={300}>
           {isLoading ? (
-            <Center h={200}>
-              <Loader color="orange" />
+            <Center h={300}>
+              <Loader color="red" size="lg" />
             </Center>
           ) : isError ? (
-            <Alert color="red" title="Не удалось загрузить товары">
-              {error?.message}
+            <Alert
+              color="red"
+              title="Mahsulotlarni yuklashda xatolik yuz berdi"
+            >
+              {error?.message || "Iltimos, qaytadan urinib ko'ring."}
             </Alert>
           ) : products.length === 0 ? (
-            <Center h={200}>
-              <Text c="dimmed">Ничего не найдено</Text>
+            <Center h={300}>
+              <Text c="dimmed" size="lg">
+                Hech qanday mahsulot topilmadi
+              </Text>
             </Center>
           ) : (
             <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="xl">
@@ -89,9 +102,10 @@ export function ProductsPage() {
         </Box>
 
         {totalPages > 1 && (
-          <Center>
+          <Center mt="xl">
             <Pagination
               radius="xl"
+              color="red"
               total={totalPages}
               value={Number(params.page ?? 1)}
               onChange={(page) => setSearchParams({ key: 'page', value: page })}

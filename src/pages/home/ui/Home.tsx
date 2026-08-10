@@ -9,17 +9,107 @@ import {
   SimpleGrid,
   Stack,
   Text,
-  TextInput,
   ThemeIcon,
   Title,
   Divider,
+  Image,
 } from '@mantine/core'
+import { IconCar, IconShieldCheck, IconClock } from '@tabler/icons-react'
 import { useNavigate } from 'react-router'
-const redBg = '#990033'
+import { useCartStore } from '@/entities/cart'
+import { notifications } from '@mantine/notifications'
+
+const redBg = '#d90008'
 const orangeBtn = '#F59E0B'
 
 export const Home = () => {
   const navigate = useNavigate()
+  const addToCart = useCartStore((state) => state.addToCart)
+
+  const featuredCars = [
+    {
+      id: 101,
+      title: 'Mercedes-Benz G-Class',
+      brand: 'Mercedes',
+      price: 150,
+      image:
+        'https://images.unsplash.com/photo-1520050206274-a1ae44613e6d?auto=format&fit=crop&w=600&q=80',
+      description: "Zamonaviy lyuks yo'ltanlamas avtomobil.",
+      category: { id: 1, name: 'Lyuks' },
+    },
+    {
+      id: 102,
+      title: 'BMW M5 Competition',
+      brand: 'BMW',
+      price: 180,
+      image:
+        'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=600&q=80',
+      description: 'Yuqori tezlik va maksimal qulaylik.',
+      category: { id: 1, name: 'Sport' },
+    },
+    {
+      id: 103,
+      title: 'Porsche 911 Carrera',
+      brand: 'Porsche',
+      price: 220,
+      image:
+        'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=600&q=80',
+      description: "Haqiqiy sport avtomobili tuyg'usi.",
+      category: { id: 1, name: 'Sport' },
+    },
+    {
+      id: 104,
+      title: 'Audi RS6 Avant',
+      brand: 'Audi',
+      price: 160,
+      image:
+        'https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=600&q=80',
+      description: 'Oila va sport uchun eng mukammal krossover.',
+      category: { id: 2, name: 'Biznes' },
+    },
+    {
+      id: 105,
+      title: 'Range Rover Autobiography',
+      brand: 'Range Rover',
+      price: 200,
+      image:
+        'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=600&q=80',
+      description: 'Eng oliy darajadagi qulaylik va xavfsizlik.',
+      category: { id: 1, name: 'Lyuks' },
+    },
+    {
+      id: 106,
+      title: 'Tesla Model S Plaid',
+      brand: 'Tesla',
+      price: 170,
+      image:
+        'https://images.unsplash.com/photo-1536700503339-1e4b06520771?auto=format&fit=crop&w=600&q=80',
+      description: 'Zamonaviy elektrokar texnologiyalari.',
+      category: { id: 3, name: 'Elektro' },
+    },
+  ]
+
+  const handleQuickAdd = (car: (typeof featuredCars)[0]) => {
+    addToCart({
+      id: car.id,
+      title: car.title,
+      price: car.price,
+      description: car.description,
+      images: [car.image],
+      slug: car.brand.toLowerCase(),
+      category: {
+        id: car.category.id,
+        name: car.category.name,
+        slug: car.category.name.toLowerCase(),
+        image: '',
+      },
+    })
+    notifications.show({
+      title: "Savatga qo'shildi!",
+      message: `${car.title} savatga qo'shildi`,
+      color: 'green',
+    })
+  }
 
   return (
     <Box pb={80}>
@@ -28,24 +118,25 @@ export const Home = () => {
           bg={redBg}
           c="white"
           style={{
-            borderRadius: 20,
+            borderRadius: 24,
             position: 'relative',
             overflow: 'hidden',
-            minHeight: 500,
+            minHeight: 520,
             marginTop: 20,
+            backgroundImage:
+              'linear-gradient(135deg, #d90008 0%, #8c0005 100%)',
           }}
           p={{ base: 'xl', md: 60 }}
         >
           <Grid gap={50} align="center">
             <Grid.Col span={{ base: 12, md: 7 }}>
-              <Title c="white" size={48} fw={800} lh={1.1} mb="md">
-                Experience the road
-                <br />
-                like never before
+              <Title c="white" size={48} fw={900} lh={1.1} mb="md">
+                Yo'lingizda qulaylik va tezlikni his eting
               </Title>
-              <Text c="white" size="lg" mb="xl" opacity={0.9} maw={500}>
-                Discover ultimate driving comfort. Rent or buy your dream car
-                today and embark on an adventure with no limits!
+              <Text c="white" size="lg" mb="xl" opacity={0.9} maw={520}>
+                Anor Rental bilan orzungizdagi avtomobilni qulay shartlarda va
+                arzon narxda ijaraga oling. Cheklovlarsiz haydash rohatini
+                tuying!
               </Text>
               <Group gap="md">
                 <Button
@@ -54,7 +145,7 @@ export const Home = () => {
                   radius="md"
                   onClick={() => navigate('/catalog')}
                 >
-                  View all cars
+                  Katalogni ko'rish
                 </Button>
                 <Button
                   size="lg"
@@ -70,27 +161,49 @@ export const Home = () => {
             </Grid.Col>
 
             <Grid.Col span={{ base: 12, md: 5 }}>
-              <Card radius="md" p="xl" withBorder shadow="xl">
-                <Title order={3} ta="center" mb="xl">
-                  Book your car
+              <Card radius="xl" p="xl" withBorder shadow="xl" bg="white">
+                <Title order={3} ta="center" mb="xl" c="dark">
+                  Avtomobil band qilish
                 </Title>
                 <Stack gap="md">
                   <Select
-                    placeholder="Car type"
-                    data={['SUV', 'Sedan', 'Coupe', 'Hatchback']}
+                    label="Avtomobil turi"
+                    placeholder="Tanlang"
+                    data={[
+                      "SUV / Yo'ltanlamas",
+                      'Sedan',
+                      'Sport / Coupe',
+                      'Elektrokar',
+                    ]}
                   />
                   <Select
-                    placeholder="Pick-up location"
-                    data={['New York', 'London', 'Berlin', 'Paris']}
+                    label="Olish joyi"
+                    placeholder="Manzilni tanlang"
+                    data={[
+                      'Toshkent (Markaz)',
+                      'Aeroport',
+                      'Samarqand',
+                      'Buxoro',
+                    ]}
                   />
                   <Select
-                    placeholder="Drop-off location"
-                    data={['New York', 'London', 'Berlin', 'Paris']}
+                    label="Qaytarish joyi"
+                    placeholder="Manzilni tanlang"
+                    data={[
+                      'Toshkent (Markaz)',
+                      'Aeroport',
+                      'Samarqand',
+                      'Buxoro',
+                    ]}
                   />
-                  <TextInput placeholder="Pick-up date" />
-                  <TextInput placeholder="Return date" />
-                  <Button fullWidth size="md" bg={orangeBtn} mt="sm">
-                    Book now
+                  <Button
+                    fullWidth
+                    size="md"
+                    bg={redBg}
+                    mt="sm"
+                    onClick={() => navigate('/catalog')}
+                  >
+                    Hozir qidirish
                   </Button>
                 </Stack>
               </Card>
@@ -100,308 +213,147 @@ export const Home = () => {
       </Container>
 
       <Container size="xl" py={80}>
-        <SimpleGrid cols={{ base: 1, md: 3 }} spacing={50}>
+        <SimpleGrid cols={{ base: 1, md: 3 }} spacing={40}>
           <Stack align="center" ta="center">
-            <Title order={4}>Availability</Title>
+            <ThemeIcon size={56} radius="xl" color="red">
+              <IconCar size={32} />
+            </ThemeIcon>
+            <Title order={3}>Keng tanlov</Title>
             <Text c="dimmed" size="sm">
-              Discover local and international car rentals at affordable rates.
+              Eng so'nggi rusumdagi biznes, sport va yo'ltanlamas
+              avtomobillarning katta katalogi.
             </Text>
           </Stack>
           <Stack align="center" ta="center">
-            <Title order={4}>Comfort</Title>
+            <ThemeIcon size={56} radius="xl" color="red">
+              <IconShieldCheck size={32} />
+            </ThemeIcon>
+            <Title order={3}>To'liq xavfsizlik</Title>
             <Text c="dimmed" size="sm">
-              Provide local & international car rentals at a price you can't
-              resist.
+              Barcha avtomobillarimiz texnik ko'rikdan o'tgan va to'liq
+              sugurtalangan.
             </Text>
           </Stack>
           <Stack align="center" ta="center">
-            <Title order={4}>Savings</Title>
+            <ThemeIcon size={56} radius="xl" color="red">
+              <IconClock size={32} />
+            </ThemeIcon>
+            <Title order={3}>24/7 Qo'llab-quvvatlash</Title>
             <Text c="dimmed" size="sm">
-              Provide local & international car rentals at a price you can't
-              resist.
+              Haftaning 7 kuni, 24 soat davomida operatorlarimiz yordam berishga
+              tayyor.
             </Text>
           </Stack>
         </SimpleGrid>
       </Container>
 
-      <Container size="xl" py={60}>
-        <Grid gap={60} align="center">
-          <Grid.Col span={{ base: 12, md: 5 }}>
-            <Box
-              w="100%"
-              style={{ aspectRatio: '1', borderRadius: 20, overflow: 'hidden' }}
-              bg="linear-gradient(135deg, #A8C0FF 0%, #3F2B96 100%)"
-            />
-          </Grid.Col>
-          <Grid.Col span={{ base: 12, md: 7 }}>
-            <Stack gap="xl">
-              {[
-                {
-                  title: 'Create an account',
-                  desc: 'Provide local & international car rentals at affordable rates that you will no longer have to pay high commissions.',
-                },
-                {
-                  title: 'Unlock the ultimate driving experience',
-                  desc: 'Provide local & international car rentals at affordable rates that you will no longer have to pay high commissions.',
-                },
-                {
-                  title: 'Collect your real life driving license',
-                  desc: 'Provide local & international car rentals at affordable rates that you will no longer have to pay high commissions.',
-                },
-                {
-                  title: 'Drive out to your next weekend getaway',
-                  desc: 'Provide local & international car rentals at affordable rates that you will no longer have to pay high commissions.',
-                },
-              ].map((step, idx) => (
-                <Group key={idx} align="flex-start" wrap="nowrap">
-                  <ThemeIcon size={32} radius="xl" color={redBg}>
-                    {idx + 1}
-                  </ThemeIcon>
-                  <Box>
-                    <Text fw={700} mb={4}>
-                      {step.title}
-                    </Text>
-                    <Text size="sm" c="dimmed">
-                      {step.desc}
-                    </Text>
-                  </Box>
-                </Group>
-              ))}
-            </Stack>
-          </Grid.Col>
-        </Grid>
-      </Container>
-
-      <Container size="xl" py={60}>
+      <Container size="xl" py={40}>
         <Group justify="space-between" align="flex-end" mb={40}>
-          <Title order={2} style={{ maxWidth: 300 }} lh={1.2}>
-            Choose the car that suits you
-          </Title>
-          <Group gap="xs" style={{ cursor: 'pointer' }}>
-            <Text fw={700}>View All</Text>
-          </Group>
+          <Box>
+            <Title order={2} size={36} fw={900}>
+              Sizga mos keladigan avtomobilni tanlang
+            </Title>
+            <Text c="dimmed" size="sm" mt={4}>
+              Eng ko'p ijaraga olingan ommabop avtomobillar
+            </Text>
+          </Box>
+          <Button
+            variant="light"
+            color="red"
+            onClick={() => navigate('/catalog')}
+          >
+            Barchasini ko'rish &rarr;
+          </Button>
         </Group>
 
         <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="xl">
-          {[
-            { brand: 'Mercedes', price: '$45', name: 'G-Class' },
-            { brand: 'Mercedes', price: '$50', name: 'S-Class' },
-            { brand: 'Mercedes', price: '$45', name: 'C-Class' },
-            { brand: 'Porsche', price: '$90', name: '911' },
-            { brand: 'Toyota', price: '$30', name: 'Camry' },
-            { brand: 'Porsche', price: '$80', name: 'Cayenne' },
-          ].map((car, idx) => (
-            <Card key={idx} padding="lg" radius="md" bg="#f8f9fa">
-              <Box
-                bg="#e9ecef"
-                h={150}
-                mb="md"
-                style={{
-                  borderRadius: 8,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              ></Box>
-              <Group justify="space-between" mb="xs">
+          {featuredCars.map((car) => (
+            <Card key={car.id} padding="lg" radius="xl" withBorder shadow="sm">
+              <Card.Section pos="relative">
+                <Image
+                  src={car.image}
+                  h={220}
+                  alt={car.title}
+                  style={{ objectFit: 'cover' }}
+                />
+              </Card.Section>
+
+              <Group justify="space-between" mt="md" mb="xs">
                 <Box>
-                  <Text fw={700}>{car.brand}</Text>
+                  <Text fw={800} size="lg">
+                    {car.title}
+                  </Text>
                   <Text size="xs" c="dimmed">
-                    {car.name}
+                    {car.brand}
                   </Text>
                 </Box>
                 <Box ta="right">
-                  <Text fw={700} c={redBg}>
-                    {car.price}
+                  <Text fw={900} c={redBg} size="xl">
+                    ${car.price}
                   </Text>
                   <Text size="xs" c="dimmed">
-                    / day
+                    / kuniga
                   </Text>
                 </Box>
               </Group>
 
-              <Divider my="sm" color="gray.3" />
+              <Text size="sm" c="dimmed" lineClamp={2} mb="md">
+                {car.description}
+              </Text>
 
-              <Group justify="space-between" mb="md" wrap="nowrap">
-                <Group gap={4} wrap="nowrap">
-                  <Text size="xs" c="dimmed">
-                    Automatic
-                  </Text>
-                </Group>
-                <Group gap={4} wrap="nowrap">
-                  <Text size="xs" c="dimmed">
-                    4 Seats
-                  </Text>
-                </Group>
-                <Group gap={4} wrap="nowrap">
-                  <Text size="xs" c="dimmed">
-                    Air Conditioned
-                  </Text>
-                </Group>
+              <Divider my="sm" color="gray.2" />
+
+              <Group justify="space-between" mt="md">
+                <Button
+                  variant="default"
+                  radius="md"
+                  style={{ flex: 1 }}
+                  onClick={() => navigate('/catalog')}
+                >
+                  Batafsil
+                </Button>
+                <Button
+                  bg={redBg}
+                  radius="md"
+                  style={{ flex: 1 }}
+                  onClick={() => handleQuickAdd(car)}
+                >
+                  Savatga
+                </Button>
               </Group>
-
-              <Button
-                fullWidth
-                bg={redBg}
-                radius="md"
-                onClick={() => navigate(`/product/${idx + 1}`)}
-              >
-                View Details
-              </Button>
             </Card>
           ))}
         </SimpleGrid>
       </Container>
 
-      <Box bg={redBg} py={60} style={{ borderRadius: 20 }} my={40}>
+      <Box bg={redBg} py={60} style={{ borderRadius: 24 }} my={60}>
         <Container size="xl">
           <Stack align="center" mb={40}>
-            <Title c="white" order={2}>
-              Facts In Numbers
+            <Title c="white" order={2} size={36}>
+              Raqamlardagi Natijalarimiz
             </Title>
-            <Text c="white" opacity={0.8} ta="center" maw={600} size="sm">
-              Discover local and international car rentals at affordable rates.
-              The ultimate driving experience is just a booking away.
+            <Text c="white" opacity={0.9} ta="center" maw={600} size="sm">
+              Anor Rental orqali minglab mijozlar o'z sayohatlarini unutilmas va
+              qulay tarzda amalga oshirishdi.
             </Text>
           </Stack>
           <SimpleGrid cols={{ base: 1, sm: 2, md: 4 }} spacing="lg">
             {[
-              { num: '640+', label: 'Cars' },
-              {
-                num: '20K+',
-                label: 'Customers',
-              },
-              {
-                num: '15+',
-                label: 'Years',
-              },
-              { num: '30M+', label: 'Miles' },
+              { num: '500+', label: 'Avtomobillar' },
+              { num: '15K+', label: 'Mamnun mijozlar' },
+              { num: '10+', label: 'Yillik tajriba' },
+              { num: '24/7', label: "Mijozlarga ko'mak" },
             ].map((fact, idx) => (
-              <Card key={idx} radius="md" p="md">
-                <Group wrap="nowrap">
-                  <Box>
-                    <Text fw={800} size="xl" lh={1.1}>
-                      {fact.num}
-                    </Text>
-                    <Text size="sm" c="dimmed">
-                      {fact.label}
-                    </Text>
-                  </Box>
-                </Group>
+              <Card key={idx} radius="lg" p="xl" ta="center">
+                <Text fw={900} size="32px" c={redBg} lh={1.1}>
+                  {fact.num}
+                </Text>
+                <Text size="sm" fw={600} c="dimmed" mt={4}>
+                  {fact.label}
+                </Text>
               </Card>
             ))}
           </SimpleGrid>
-        </Container>
-      </Box>
-
-      <Container size="xl" py={80}>
-        <Grid align="center" gap={60}>
-          <Grid.Col span={{ base: 12, md: 6 }}>
-            <Title order={2} mb="md" size={40} lh={1.2}>
-              Download
-              <br />
-              mobile app
-            </Title>
-            <Text c="dimmed" mb="xl">
-              Provide local & international car rentals at affordable rates that
-              you will no longer have to pay high commissions. The ultimate
-              driving experience is just a tap away.
-            </Text>
-            <Group>
-              <Button size="xl" bg="black" radius="md" style={{ flex: 1 }}>
-                <Stack gap={0} align="flex-start">
-                  <Text size="xs" lh={1} fw={400}>
-                    Download on the
-                  </Text>
-                  <Text size="sm" fw={700}>
-                    App Store
-                  </Text>
-                </Stack>
-              </Button>
-              <Button size="xl" bg="black" radius="md" style={{ flex: 1 }}>
-                <Stack gap={0} align="flex-start">
-                  <Text size="xs" lh={1} fw={400}>
-                    GET IT ON
-                  </Text>
-                  <Text size="sm" fw={700}>
-                    Google Play
-                  </Text>
-                </Stack>
-              </Button>
-            </Group>
-          </Grid.Col>
-          <Grid.Col span={{ base: 12, md: 6 }}>
-            <Group
-              justify="center"
-              style={{ position: 'relative', height: 400 }}
-            >
-              <Box
-                w={200}
-                h={400}
-                bg="white"
-                style={{
-                  border: '8px solid black',
-                  borderRadius: 40,
-                  position: 'absolute',
-                  zIndex: 1,
-                  boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
-                }}
-              />
-              <Box
-                w={200}
-                h={350}
-                bg="white"
-                style={{
-                  border: '8px solid black',
-                  borderRadius: 40,
-                  position: 'absolute',
-                  right: 40,
-                  top: 25,
-                  zIndex: 0,
-                  opacity: 0.8,
-                }}
-              />
-            </Group>
-          </Grid.Col>
-        </Grid>
-      </Container>
-
-      <Box bg={redBg} py={60} style={{ borderRadius: 20 }} mt={40}>
-        <Container size="xl">
-          <Grid align="center">
-            <Grid.Col span={{ base: 12, md: 7 }}>
-              <Title c="white" order={2} size={36} mb="sm" lh={1.2}>
-                Enjoy every mile with
-                <br />
-                adorable companionship.
-              </Title>
-              <Text c="white" opacity={0.8} mb="xl" size="sm" maw={400}>
-                Provide local & international car rentals at affordable rates
-                that you will no longer have to pay high commissions.
-              </Text>
-              <Box
-                style={{
-                  backgroundColor: 'white',
-                  padding: 8,
-                  borderRadius: 30,
-                  display: 'flex',
-                  maxWidth: 400,
-                }}
-              >
-                <TextInput
-                  placeholder="Enter your email"
-                  variant="unstyled"
-                  style={{ flex: 1, paddingLeft: 10 }}
-                />
-                <Button radius="xl" bg={orangeBtn}>
-                  Subscribe
-                </Button>
-              </Box>
-            </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 5 }}>
-              <Group justify="flex-end"></Group>
-            </Grid.Col>
-          </Grid>
         </Container>
       </Box>
     </Box>

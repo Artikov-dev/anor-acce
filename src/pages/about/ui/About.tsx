@@ -5,28 +5,27 @@ import {
   Grid,
   SimpleGrid,
   Box,
-  Group,
   Stack,
   Card,
   Avatar,
   Accordion,
-  Button,
+  Image,
 } from '@mantine/core'
 
 export const About = () => {
-  const redBg = '#990033'
+  const redBg = '#d90008'
 
   return (
     <Box pb={80}>
       <Container size="xl" py={40}>
         <Stack align="center" mb={60}>
           <Title order={1} size={48} fw={900}>
-            About Us
+            Biz Haqimizda
           </Title>
           <Text c="dimmed">
-            Home /{' '}
+            Bosh sahifa /{' '}
             <Text span fw={600} c="black">
-              About Us
+              Biz Haqimizda
             </Text>
           </Text>
         </Stack>
@@ -34,202 +33,106 @@ export const About = () => {
         <Grid gap={60} mb={80} align="center">
           <Grid.Col span={{ base: 12, md: 5 }}>
             <Title order={2} size={40} fw={900} lh={1.1}>
-              Where every drive feels extraordinary
+              Har bir haydash safari qulay va xavfsiz bo'lsin
             </Title>
           </Grid.Col>
           <Grid.Col span={{ base: 12, md: 7 }}>
-            <SimpleGrid cols={2} spacing="xl">
+            <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="xl">
               <Box>
                 <Title order={4} mb="xs">
-                  Variety Brands
+                  Keng turdagi avtomobillar
                 </Title>
                 <Text size="sm" c="dimmed">
-                  Pellentesque habitant morbi tristique senectus et netus et
-                  malesuada fames ac turpis egestas.
+                  Kichik shaharlararo mashinalardan tortib lyuks
+                  krossoverlargacha mavjud.
                 </Text>
               </Box>
               <Box>
                 <Title order={4} mb="xs">
-                  Awesome Support
+                  Yuqori xizmat ko'rsatish
                 </Title>
                 <Text size="sm" c="dimmed">
-                  Nulla facilisi. Aenean nec eros. Vestibulum ante ipsum primis
-                  in faucibus orci luctus et.
+                  Mijozlarimiz uchun tunu-kun professional qo'llab-quvvatlash
+                  xizmati.
                 </Text>
               </Box>
               <Box>
                 <Title order={4} mb="xs">
-                  Maximum Freedom
+                  Erkin harakatlanish
                 </Title>
                 <Text size="sm" c="dimmed">
-                  Mauris in quam tristique, dignissim urna in, congue magna.
-                  Donec sit amet urna sit amet erat.
+                  O'zbekistonning istalgan nuqtasiga qulay shartlarda sayohat
+                  qiling.
                 </Text>
               </Box>
               <Box>
                 <Title order={4} mb="xs">
-                  Flexibility On The Go
+                  Hamyonbop narxlar
                 </Title>
                 <Text size="sm" c="dimmed">
-                  Pellentesque vel purus varius, rhoncus ex sed, tincidunt
-                  sapien. Curabitur elementum mi.
+                  Hech qanday yashirin to'lovlarsiz shaffof va arzon ijara
+                  tariflari.
                 </Text>
               </Box>
             </SimpleGrid>
           </Grid.Col>
         </Grid>
 
-        <Box
-          bg="#f1f3f5"
-          mb={80}
-          style={{
-            height: 400,
-            borderRadius: 24,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        ></Box>
+        <Box mb={80} style={{ borderRadius: 24, overflow: 'hidden' }}>
+          <Image
+            src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=1200&q=80"
+            h={400}
+            alt="Anor Rental Car Fleet"
+            style={{ objectFit: 'cover' }}
+          />
+        </Box>
 
         <SimpleGrid cols={{ base: 1, sm: 3 }} mb={100} ta="center">
           <Box>
             <Title size={64} c={redBg} fw={900}>
-              20k+
+              15K+
             </Title>
             <Text fw={700} size="lg">
-              Happy customers
+              Mamnun mijozlar
             </Text>
           </Box>
           <Box>
             <Title size={64} c={redBg} fw={900}>
-              540+
+              500+
             </Title>
             <Text fw={700} size="lg">
-              Count of cars
+              Avtomobillar soni
             </Text>
           </Box>
           <Box>
             <Title size={64} c={redBg} fw={900}>
-              25+
+              10+
             </Title>
             <Text fw={700} size="lg">
-              Years of expertise
+              Yillik tajriba
             </Text>
           </Box>
         </SimpleGrid>
 
-        <Grid gap={60} mb={100} align="center">
-          <Grid.Col span={{ base: 12, md: 6 }}>
-            <Title order={2} size={36} fw={900} lh={1.1} mb="md">
-              Unlock unforgettable memories on the road
-            </Title>
-            <Text c="dimmed" mb="xl">
-              Aliquam varius diam mauris, ut congue nunc consequat sed. Maecenas
-              ac mi justo. Praesent feugiat eros quis imperdiet ultricies.
-            </Text>
-
-            <SimpleGrid cols={2} spacing="md">
-              {[
-                'Nulla euismod diam et dui imperdiet varius. Aenean gravida.',
-                'Fusce euismod dui quis elit dapibus tempor. Class aptent taciti.',
-                'Suspendisse potenti. In in congue purus. Sed euismod est id.',
-                'Maecenas rhoncus, nulla at bibendum elementum, nunc orci.',
-              ].map((text, i) => (
-                <Group key={i} align="flex-start" wrap="nowrap" gap="sm">
-                  <Text size="sm" c="dimmed">
-                    {text}
-                  </Text>
-                </Group>
-              ))}
-            </SimpleGrid>
-          </Grid.Col>
-          <Grid.Col span={{ base: 12, md: 6 }}>
-            <Box
-              bg="#f1f3f5"
-              style={{
-                height: 400,
-                borderRadius: 24,
-                boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
-              }}
-            />
-          </Grid.Col>
-        </Grid>
-
-        <Box
-          bg={redBg}
-          p={60}
-          mb={100}
-          style={{ borderRadius: 40, position: 'relative', overflow: 'hidden' }}
-        >
-          <Grid align="center" gap={60}>
-            <Grid.Col span={{ base: 12, md: 4 }}>
-              <Box
-                bg="white"
-                style={{
-                  width: 220,
-                  height: 450,
-                  borderRadius: 36,
-                  border: '8px solid black',
-                  margin: '0 auto',
-                  position: 'absolute',
-                  top: 20,
-                  boxShadow: '0 20px 40px rgba(0,0,0,0.2)',
-                }}
-              />
-            </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 8 }}>
-              <Title c="white" size={40} mb="sm">
-                Download our app
-              </Title>
-              <Text c="white" opacity={0.9} mb="xl" maw={500}>
-                Nulla varius neque eget ipsum eleifend, ut ultrices nunc
-                vehicula. Curabitur vel lorem diam. Duis accumsan elit est.
-              </Text>
-              <Group>
-                <Button size="xl" bg="black" radius="md">
-                  <Stack gap={0} align="flex-start">
-                    <Text size="xs" lh={1} fw={400}>
-                      Download on the
-                    </Text>
-                    <Text size="sm" fw={700}>
-                      App Store
-                    </Text>
-                  </Stack>
-                </Button>
-                <Button size="xl" bg="black" radius="md">
-                  <Stack gap={0} align="flex-start">
-                    <Text size="xs" lh={1} fw={400}>
-                      GET IT ON
-                    </Text>
-                    <Text size="sm" fw={700}>
-                      Google Play
-                    </Text>
-                  </Stack>
-                </Button>
-              </Group>
-            </Grid.Col>
-          </Grid>
-        </Box>
-
         <Title ta="center" order={2} size={36} mb={40}>
-          Reviews from our customers
+          Mijozlarimiz izohlari
         </Title>
         <SimpleGrid cols={{ base: 1, md: 3 }} spacing="xl" mb={100}>
           {[
             {
-              name: 'Sarah Doyle',
-              role: 'Customer',
-              text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.',
+              name: 'Sardor Rahimov',
+              role: 'Mijoz',
+              text: 'Anor Rental xizmatidan juda mamnunman. Avtomobil toza va texnik soz holatda topshirildi. Rahmat!',
             },
             {
-              name: 'Oliver Wilson',
-              role: 'Customer',
-              text: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.',
+              name: 'Jahongir Olimov',
+              role: 'Tadbirkor',
+              text: "Biznes uchrashuvim uchun Mercedes S-Class ijaraga oldim. Xizmat ko'rsatish yuqori darajada.",
             },
             {
-              name: 'Kylie Williams',
-              role: 'Customer',
-              text: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis.',
+              name: 'Malika Yoqubova',
+              role: 'Mijoz',
+              text: 'Samarqandga sayohat uchun krossover oldik. Narxlari boshqalarga qaraganda juda qulay.',
             },
           ].map((review, i) => (
             <Card
@@ -279,17 +182,16 @@ export const About = () => {
 
         <Stack align="center" mb={40}>
           <Title order={2} size={36}>
-            Top Car Rental Questions
+            Eng Ko'p Beriladigan Savollar
           </Title>
         </Stack>
         <Box maw={800} mx="auto">
           <Accordion variant="separated" radius="md">
             {[
-              'How does it work?',
-              'Can I rent a car without a credit card?',
-              'What are the requirements for renting a car?',
-              'Does Car Rental allow me to tow with or attach a hitch to the rental vehicle?',
-              'Does Car Rental offer coverage products for purchase with my rental?',
+              'Avtomobilni qanday ijaraga olish mumkin?',
+              'Ijara uchun qanday hujjatlar talab qilinadi?',
+              "Avtomobilni boshqa shaharda topshirsa bo'ladimi?",
+              "Sug'urta xizmati narxga kiradimi?",
             ].map((q, i) => (
               <Accordion.Item
                 key={i}
@@ -302,10 +204,9 @@ export const About = () => {
                 </Accordion.Control>
                 <Accordion.Panel>
                   <Text c="dimmed" size="sm">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    Saytimiz orqali kerakli avtomobilni tanlab, savatga qo'shing
+                    va buyurtma bering. Operatorlarimiz 15 daqiqa ichida siz
+                    bilan bog'lanib, shartnomani rasmiylashtiradilar.
                   </Text>
                 </Accordion.Panel>
               </Accordion.Item>

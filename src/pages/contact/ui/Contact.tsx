@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import {
   Container,
   Title,
@@ -8,179 +9,194 @@ import {
   Group,
   Stack,
   Card,
-  Select,
   TextInput,
+  Textarea,
   Button,
+  Image,
 } from '@mantine/core'
+import { notifications } from '@mantine/notifications'
+import {
+  IconMapPin,
+  IconMail,
+  IconPhone,
+  IconClock,
+  IconCheck,
+} from '@tabler/icons-react'
 
 export const Contact = () => {
-  const redBg = '#990033'
-  const orangeBtn = '#F59E0B'
+  const redBg = '#d90008'
+  const [name, setName] = useState('')
+  const [phone, setPhone] = useState('')
+  const [message, setMessage] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+    setTimeout(() => {
+      setLoading(false)
+      setName('')
+      setPhone('')
+      setMessage('')
+      notifications.show({
+        title: 'Muvaffaqiyatli!',
+        message: "Xabaringiz yuborildi. Tez orada siz bilan bog'lanamiz.",
+        color: 'green',
+        icon: <IconCheck size={18} />,
+      })
+    }, 800)
+  }
 
   return (
     <Box pb={80}>
       <Container size="xl" py={40}>
         <Stack align="center" mb={60}>
           <Title order={1} size={48} fw={900}>
-            Contact Us
+            Biz Bilan Aloqa
           </Title>
           <Text c="dimmed">
-            Home /{' '}
+            Bosh sahifa /{' '}
             <Text span fw={600} c="black">
-              Contact Us
+              Aloqa
             </Text>
           </Text>
         </Stack>
 
-        <Grid gap={40} mb={100}>
-          <Grid.Col span={{ base: 12, md: 4 }}>
-            <Card p={40} radius="xl" bg={redBg} style={{ height: '100%' }}>
+        <Grid gap={40} mb={80}>
+          <Grid.Col span={{ base: 12, md: 5 }}>
+            <Card
+              p={40}
+              radius="xl"
+              bg={redBg}
+              c="white"
+              style={{ height: '100%' }}
+            >
               <Title order={3} c="white" ta="center" mb="xl">
-                Book your car
+                Bizga Xabar Yo'llang
               </Title>
-              <Stack gap="md">
-                <Select
-                  placeholder="Car type"
-                  data={['SUV', 'Sedan', 'Coupe', 'Hatchback']}
-                  styles={{
-                    input: {
-                      backgroundColor: 'transparent',
-                      color: 'white',
-                      borderColor: 'rgba(255,255,255,0.2)',
-                    },
-                  }}
-                />
-                <Select
-                  placeholder="Place of rental"
-                  data={['New York', 'London', 'Berlin', 'Paris']}
-                  styles={{
-                    input: {
-                      backgroundColor: 'transparent',
-                      color: 'white',
-                      borderColor: 'rgba(255,255,255,0.2)',
-                    },
-                  }}
-                />
-                <Select
-                  placeholder="Place of return"
-                  data={['New York', 'London', 'Berlin', 'Paris']}
-                  styles={{
-                    input: {
-                      backgroundColor: 'transparent',
-                      color: 'white',
-                      borderColor: 'rgba(255,255,255,0.2)',
-                    },
-                  }}
-                />
-                <TextInput
-                  placeholder="Rental date"
-                  styles={{
-                    input: {
-                      backgroundColor: 'transparent',
-                      color: 'white',
-                      borderColor: 'rgba(255,255,255,0.2)',
-                    },
-                  }}
-                />
-                <TextInput
-                  placeholder="Return date"
-                  styles={{
-                    input: {
-                      backgroundColor: 'transparent',
-                      color: 'white',
-                      borderColor: 'rgba(255,255,255,0.2)',
-                    },
-                  }}
-                />
-                <Button fullWidth size="md" bg={orangeBtn} mt="xl" radius="md">
-                  Book now
-                </Button>
-              </Stack>
+              <form onSubmit={handleSubmit}>
+                <Stack gap="md">
+                  <TextInput
+                    placeholder="Ismingiz"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    styles={{
+                      input: {
+                        backgroundColor: 'rgba(255,255,255,0.15)',
+                        color: 'white',
+                        borderColor: 'rgba(255,255,255,0.3)',
+                      },
+                    }}
+                  />
+                  <TextInput
+                    placeholder="Telefon raqamingiz"
+                    required
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    styles={{
+                      input: {
+                        backgroundColor: 'rgba(255,255,255,0.15)',
+                        color: 'white',
+                        borderColor: 'rgba(255,255,255,0.3)',
+                      },
+                    }}
+                  />
+                  <Textarea
+                    placeholder="Xabaringiz matni..."
+                    rows={4}
+                    required
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    styles={{
+                      input: {
+                        backgroundColor: 'rgba(255,255,255,0.15)',
+                        color: 'white',
+                        borderColor: 'rgba(255,255,255,0.3)',
+                      },
+                    }}
+                  />
+                  <Button
+                    fullWidth
+                    size="md"
+                    color="dark"
+                    mt="md"
+                    radius="md"
+                    type="submit"
+                    loading={loading}
+                  >
+                    Xabarni yuborish
+                  </Button>
+                </Stack>
+              </form>
             </Card>
           </Grid.Col>
-          <Grid.Col span={{ base: 12, md: 8 }}>
+          <Grid.Col span={{ base: 12, md: 7 }}>
             <Box
-              bg="#f1f3f5"
               style={{
                 height: '100%',
                 minHeight: 400,
                 borderRadius: 24,
+                overflow: 'hidden',
                 boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
               }}
-            />
+            >
+              <Image
+                src="https://images.unsplash.com/photo-1577083552431-6e5fd01aa342?auto=format&fit=crop&w=1000&q=80"
+                h="100%"
+                alt="Anor Rental Office"
+                style={{ objectFit: 'cover' }}
+              />
+            </Box>
           </Grid.Col>
         </Grid>
 
-        <SimpleGrid cols={{ base: 1, sm: 2, lg: 4 }} spacing="xl" mb={100}>
-          <Group wrap="nowrap">
+        <SimpleGrid cols={{ base: 1, sm: 2, lg: 4 }} spacing="xl" mb={80}>
+          <Group wrap="nowrap" align="flex-start">
+            <IconMapPin size={32} color={redBg} />
             <Box>
               <Text size="sm" c="dimmed">
-                Address
+                Manzilimiz
               </Text>
-              <Text fw={700}>Oxford Ave. Cary, NC 27511</Text>
+              <Text fw={700}>
+                Toshkent sh., Yunusobod tumani, Amir Temur ko'chasi 42-uy
+              </Text>
             </Box>
           </Group>
-          <Group wrap="nowrap">
+          <Group wrap="nowrap" align="flex-start">
+            <IconMail size={32} color={redBg} />
             <Box>
               <Text size="sm" c="dimmed">
-                Email
+                Elektron pochta
               </Text>
-              <Text fw={700}>nwiger@yahoo.com</Text>
+              <Text fw={700}>info@anor-rental.uz</Text>
             </Box>
           </Group>
-          <Group wrap="nowrap">
+          <Group wrap="nowrap" align="flex-start">
+            <IconPhone size={32} color={redBg} />
             <Box>
               <Text size="sm" c="dimmed">
-                Phone
+                Telefon
               </Text>
-              <Text fw={700}>+537 547-6401</Text>
+              <Text fw={700}>+998 71 200-00-00</Text>
             </Box>
           </Group>
-          <Group wrap="nowrap">
+          <Group wrap="nowrap" align="flex-start">
+            <IconClock size={32} color={redBg} />
             <Box>
               <Text size="sm" c="dimmed">
-                Opening hours
+                Ish vaqti
               </Text>
-              <Text fw={700}>Sun-Mon: 10am - 10pm</Text>
+              <Text fw={700}>Dush-Yak: 24 soat ochiq</Text>
             </Box>
           </Group>
-        </SimpleGrid>
-
-        <Title ta="center" order={2} size={36} mb={60}>
-          Latest blog posts & news
-        </Title>
-        <SimpleGrid cols={{ base: 1, md: 3 }} spacing="xl" mb={100}>
-          {[
-            {
-              title: 'How To Choose The Right Car',
-              date: 'News / 12April 2024',
-            },
-            {
-              title: 'Which plan is right for me?',
-              date: 'News / 12April 2024',
-            },
-            {
-              title: 'Enjoy Speed, Choice & Total Control',
-              date: 'News / 12April 2024',
-            },
-          ].map((post, i) => (
-            <Box key={i}>
-              <Box bg="#f1f3f5" h={220} mb="md" style={{ borderRadius: 16 }} />
-              <Title order={4} mb="xs">
-                {post.title}
-              </Title>
-              <Text size="sm" c="dimmed">
-                {post.date}
-              </Text>
-            </Box>
-          ))}
         </SimpleGrid>
 
         <Box
           py={40}
           px={{ base: 20, md: 60 }}
           bg="#fafafa"
-          style={{ borderRadius: 40 }}
+          style={{ borderRadius: 24 }}
         >
           <Group
             justify="space-around"
@@ -198,13 +214,13 @@ export const Contact = () => {
               MERCEDES
             </Title>
             <Title order={3} fw={900}>
-              Jeep
+              JEEP
             </Title>
             <Title order={3} fw={900} style={{ letterSpacing: 1 }}>
               BMW
             </Title>
             <Title order={3} fw={300} style={{ fontStyle: 'italic' }}>
-              Audi
+              AUDI
             </Title>
           </Group>
         </Box>

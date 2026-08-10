@@ -51,19 +51,21 @@ export const ProductFilter = () => {
   }
 
   return (
-    <Group justify="center" gap="md" align="flex-end">
+    <Group justify="center" gap="md" align="flex-end" wrap="wrap">
       <Button
         radius="xl"
+        color="red"
         variant={activeCategory === '' ? 'filled' : 'default'}
         onClick={() => onCategoryClick('')}
       >
-        Все
+        Barchasi
       </Button>
 
       {categories?.map((category: ICategory) => (
         <Button
           key={category.id}
           radius="xl"
+          color="red"
           variant={
             activeCategory === String(category.id) ? 'filled' : 'default'
           }
@@ -74,32 +76,32 @@ export const ProductFilter = () => {
       ))}
 
       <TextInput
-        w={200}
+        w={220}
         radius="xl"
-        placeholder="Поиск по названию"
+        placeholder="Nomi bo'yicha qidirish..."
         value={searchValue}
         onChange={(event) => setSearchValue(event.currentTarget.value)}
       />
 
       <NumberInput
-        w={100}
+        w={110}
         radius="xl"
-        placeholder="От ($)"
+        placeholder="Min ($)"
         value={priceMin}
         onChange={(value) => setPriceMin(value)}
         min={0}
       />
       <NumberInput
-        w={100}
+        w={110}
         radius="xl"
-        placeholder="До ($)"
+        placeholder="Max ($)"
         value={priceMax}
         onChange={(value) => setPriceMax(value)}
         min={0}
       />
 
-      <Button radius="xl" variant="light" color="red" onClick={resetFilters}>
-        Сбросить
+      <Button radius="xl" variant="light" color="gray" onClick={resetFilters}>
+        Tozalash
       </Button>
     </Group>
   )

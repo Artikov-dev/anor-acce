@@ -45,19 +45,19 @@ export const DashboardHome: React.FC = () => {
 
   const stats = [
     {
-      title: 'Всего товаров',
+      title: 'Jami mahsulotlar',
       value: totalProducts.toString(),
       color: 'blue',
       link: '/dashboard/products',
     },
     {
-      title: 'Всего категорий',
+      title: 'Jami kategoriyalar',
       value: totalCategories.toString(),
       color: 'teal',
       link: '/dashboard/categories',
     },
     {
-      title: 'Средняя цена товара',
+      title: "O'rtacha mahsulot narxi",
       value: `$${averagePrice}`,
       color: 'violet',
       link: '/dashboard/products',
@@ -67,9 +67,9 @@ export const DashboardHome: React.FC = () => {
   return (
     <Stack gap="lg">
       <div>
-        <Title order={2}>Главная панель дашборда</Title>
+        <Title order={2}>Admin Boshqaruv Paneli</Title>
         <Text c="dimmed" size="sm">
-          Общая аналитика и основные показатели магазина
+          Do'konning umumiy analitikasi va ko'rsatkichlari
         </Text>
       </div>
 
@@ -80,9 +80,15 @@ export const DashboardHome: React.FC = () => {
           <Skeleton height={120} radius="md" />
         </SimpleGrid>
       ) : isError ? (
-        <Alert title="Ошибка загрузки аналитики" color="red" variant="filled">
+        <Alert
+          title="Analitikani yuklashda xatolik"
+          color="red"
+          variant="filled"
+        >
           <Group justify="space-between" align="center">
-            <Text size="sm">Не удалось загрузить данные дашборда.</Text>
+            <Text size="sm">
+              Boshqaruv paneli ma'lumotlarini yuklab bo'lmadi.
+            </Text>
             <Button
               variant="white"
               color="red"
@@ -92,7 +98,7 @@ export const DashboardHome: React.FC = () => {
                 refetchCategories()
               }}
             >
-              Повторить
+              Qayta urinish
             </Button>
           </Group>
         </Alert>
@@ -122,8 +128,8 @@ export const DashboardHome: React.FC = () => {
               </Group>
 
               <Group gap={4} mt="md" align="center">
-                <Text size="xs" c="blue" fw={500}>
-                  Перейти в раздел &rarr;
+                <Text size="xs" c="red" fw={600}>
+                  Bo'limga o'tish &rarr;
                 </Text>
               </Group>
             </Paper>
