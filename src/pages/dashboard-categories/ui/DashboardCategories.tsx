@@ -19,7 +19,7 @@ import {
 } from '@/entities/category'
 import { CategoryModal } from '@/features/manage-category'
 import { notifications } from '@mantine/notifications'
-import { cleanImageUrl } from '@/shared/lib/utils/cleanImageUrl'
+import { cleanImageUrl } from '@/shared'
 
 export const DashboardCategories: React.FC = () => {
   const { data: categories, isLoading, isError, refetch } = useCategoriesQuery()

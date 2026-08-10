@@ -7,7 +7,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import '@mantine/core/styles.css'
 import '@mantine/notifications/styles.css'
 import { router } from './router/router'
-import { ErrorBoundary } from '@/shared/ui/ErrorBoundary/ErrorBoundary'
+import { ErrorBoundary } from '@/shared'
 
 const queryClient = new QueryClient()
 

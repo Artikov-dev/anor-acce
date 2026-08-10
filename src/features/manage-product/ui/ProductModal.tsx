@@ -18,7 +18,7 @@ import {
   useUpdateProductMutation,
 } from '@/entities/product'
 import { notifications } from '@mantine/notifications'
-import { cleanImageUrl } from '@/shared/lib/utils/cleanImageUrl'
+import { cleanImageUrl } from '@/shared'
 
 interface ProductModalProps {
   opened: boolean

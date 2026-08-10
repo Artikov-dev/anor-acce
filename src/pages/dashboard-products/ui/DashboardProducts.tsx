@@ -27,7 +27,7 @@ import {
 import { useCategoriesQuery } from '@/entities/category'
 import { ProductModal } from '@/features/manage-product'
 import { notifications } from '@mantine/notifications'
-import { cleanImageUrl } from '@/shared/lib/utils/cleanImageUrl'
+import { cleanImageUrl } from '@/shared'
 
 const PAGE_SIZE = 10
 

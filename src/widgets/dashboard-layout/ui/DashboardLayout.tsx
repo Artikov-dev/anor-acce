@@ -14,7 +14,7 @@ import {
 } from '@mantine/core'
 import { IconArrowLeft } from '@tabler/icons-react'
 import { useProfileQuery, useLogout, useAuthStore } from '@/entities/user'
-import { cleanImageUrl } from '@/shared/lib/utils/cleanImageUrl'
+import { cleanImageUrl } from '@/shared'
 
 export const DashboardLayout: React.FC = () => {
   const navigate = useNavigate()

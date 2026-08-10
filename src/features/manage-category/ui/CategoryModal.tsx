@@ -7,7 +7,7 @@ import {
   useUpdateCategoryMutation,
 } from '@/entities/category'
 import { notifications } from '@mantine/notifications'
-import { cleanImageUrl } from '@/shared/lib/utils/cleanImageUrl'
+import { cleanImageUrl } from '@/shared'
 
 interface CategoryModalProps {
   opened: boolean

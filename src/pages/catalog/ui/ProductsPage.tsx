@@ -14,23 +14,33 @@ import {
   Modal,
   Group,
 } from '@mantine/core'
+import { modals } from '@mantine/modals'
+import { notifications } from '@mantine/notifications'
+import { IconCheck } from '@tabler/icons-react'
 import {
   ProductCard,
   useProducts,
+  useDeleteProduct,
   type IProduct,
   type TProductParams,
 } from '@/entities/product'
 import { ProductFilter } from '@/features/filter-products'
 import { CreateProduct } from '@/features/manage-product'
-import { useSearchRequestParams } from '@/shared/lib/hooks/useSearchRequestParams'
 import { useAuthStore } from '@/entities/user'
+import { useCartStore } from '@/entities/cart'
+import { useSearchRequestParams } from '@/shared'
 
 const PAGE_SIZE = 6
 
 export function ProductsPage() {
   const [opened, setOpened] = useState(false)
+  const [editingProduct, setEditingProduct] = useState<IProduct | undefined>(
+    undefined
+  )
   const user = useAuthStore((state) => state.user)
   const isAdmin = user?.role === 'admin'
+  const addToCart = useCartStore((state) => state.addToCart)
+  const deleteMutation = useDeleteProduct()
 
   const { getDefaultSearchParams, setSearchParams } =
     useSearchRequestParams<TProductParams>({
@@ -44,14 +54,72 @@ export function ProductsPage() {
   const products = Array.isArray(data) ? data : []
   const totalPages = Math.ceil((products.length || 0) / PAGE_SIZE)
 
+  const handleAddToCart = (product: IProduct) => {
+    addToCart(product)
+    notifications.show({
+      title: "Savatga qo'shildi!",
+      message: `${product.title} savatingizga muvaffaqiyatli qo'shildi`,
+      color: 'green',
+      icon: <IconCheck size={18} />,
+    })
+  }
+
+  const handleEdit = (product: IProduct) => {
+    setEditingProduct(product)
+    setOpened(true)
+  }
+
+  const handleDelete = (product: IProduct) => {
+    modals.openConfirmModal({
+      title: "O'chirishni tasdiqlang",
+      centered: true,
+      children: (
+        <Text size="sm">
+          Siz rostdan ham <b>{product.title}</b> mahsulotini ochirmoqchimisiz?
+          Bu amalni ortga qaytarib bolmaydi.
+        </Text>
+      ),
+      labels: { confirm: 'Ochirish', cancel: 'Bekor qilish' },
+      confirmProps: { color: 'red' },
+      onConfirm: () => {
+        deleteMutation.mutate(Number(product.id), {
+          onSuccess: () => {
+            notifications.show({
+              title: 'Muvaffaqiyatli!',
+              message: 'Mahsulot ochirildi',
+              color: 'green',
+            })
+          },
+          onError: () => {
+            notifications.show({
+              title: 'Xatolik!',
+              message: "Mahsulotni o'chirishda xatolik yuz berdi",
+              color: 'red',
+            })
+          },
+        })
+      },
+    })
+  }
+
+  const handleCloseModal = () => {
+    setEditingProduct(undefined)
+    setOpened(false)
+  }
+
   return (
     <Container size="xl" py="xl">
       <Modal
         opened={opened}
-        onClose={() => setOpened(false)}
-        title="Yangi mahsulot qo'shish"
+        onClose={handleCloseModal}
+        title={
+          editingProduct ? 'Mahsulotni tahrirlash' : "Yangi mahsulot qo'shish"
+        }
       >
-        <CreateProduct onSuccessCallback={() => setOpened(false)} />
+        <CreateProduct
+          product={editingProduct}
+          onSuccessCallback={handleCloseModal}
+        />
       </Modal>
 
       <Stack gap={30} align="stretch">
@@ -66,7 +134,14 @@ export function ProductsPage() {
             </Text>
           </Box>
           {isAdmin && (
-            <Button onClick={() => setOpened(true)} color="red" radius="md">
+            <Button
+              onClick={() => {
+                setEditingProduct(undefined)
+                setOpened(true)
+              }}
+              color="red"
+              radius="md"
+            >
               + Yangi mahsulot
             </Button>
           )}
@@ -95,7 +170,14 @@ export function ProductsPage() {
           ) : (
             <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="xl">
               {products.map((product: IProduct) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  isAdmin={isAdmin}
+                  onAddToCart={handleAddToCart}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                />
               ))}
             </SimpleGrid>
           )}
